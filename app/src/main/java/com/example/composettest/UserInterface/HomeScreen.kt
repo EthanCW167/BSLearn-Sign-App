@@ -21,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
@@ -72,6 +73,7 @@ fun InfoBox() {
             .padding(top = 100.dp)
             .width(350.dp)
             .height(70.dp)
+            .shadow(elevation = 5.dp, shape = RoundedCornerShape(20.dp))
             .clip(shape = RoundedCornerShape(20.dp))
             .background(Color(72,69,211), shape = RoundedCornerShape(20.dp)),
         horizontalArrangement = Arrangement.SpaceEvenly,
@@ -176,8 +178,9 @@ fun MainBody(list: List<TestData>, navController: NavController){
 
             Row(
                 Modifier
-                    .padding(horizontal = 20.dp)
+                    .padding(horizontal = 10.dp)
                     .fillMaxWidth()
+                    .shadow(elevation = 5.dp, shape = RoundedCornerShape(20.dp))
                     .height(120.dp)
                     .background(Color(238,238,255), shape = RoundedCornerShape(20.dp))
 
@@ -193,6 +196,7 @@ fun MainBody(list: List<TestData>, navController: NavController){
                         .fillMaxWidth()
                         .wrapContentHeight()
                         .padding(top = 5.dp)
+                        .padding(horizontal = 5.dp)
                 ) {
                     items(
                         items = list
@@ -263,6 +267,7 @@ fun MainBodyIconButton(
         Modifier
             .padding(15.dp)
             .size(150.dp)
+            .shadow(elevation = 5.dp, shape = RoundedCornerShape(20.dp))
             .clip(shape = RoundedCornerShape(20.dp))
             .background(Color(238,238,255), shape = RoundedCornerShape(20.dp))) {
         Column(verticalArrangement = Arrangement.SpaceEvenly, horizontalAlignment = Alignment.CenterHorizontally) {
@@ -285,12 +290,7 @@ fun LessonCard(testData: TestData, onItemClick: () -> Unit){
                 indication = rememberRipple(bounded = true, color = Color.Black),
                 onClick = onItemClick
             ),
-        backgroundColor = Color.LightGray,
-        elevation = 12.dp
-
-
-
-    ) {
+        backgroundColor = Color.LightGray) {
         Column(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
