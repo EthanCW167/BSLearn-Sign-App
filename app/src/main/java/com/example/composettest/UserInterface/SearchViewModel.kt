@@ -2,6 +2,7 @@ package com.example.composettest.UserInterface
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.composettest.Person
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
@@ -41,23 +42,6 @@ class SearchViewModel: ViewModel() {
     }
 }
 
-data class Person(
-    val firstName: String,
-    val lastName: String
-) {
-    fun doesMatchSearchQuery(query: String): Boolean {
-        val matchingCombinations = listOf(
-            "$firstName$lastName",
-            "$firstName $lastName",
-            "${firstName.first()} ${lastName.first()}",
-        )
-
-        return matchingCombinations.any {
-            it.contains(query, ignoreCase = true)
-        }
-    }
-}
-
 private val allPersons = listOf(
     Person(
         firstName = "Philipp",
@@ -76,3 +60,4 @@ private val allPersons = listOf(
         lastName = "Stops"
     ),
 )
+
