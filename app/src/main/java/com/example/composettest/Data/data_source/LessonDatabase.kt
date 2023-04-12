@@ -12,4 +12,8 @@ import com.example.composettest.Domain.model.Lesson
 abstract class LessonDatabase: RoomDatabase() {
 
     abstract val lessonDao: LessonDao
+
+    companion object{
+        const val DATABASE_NAME = "lesson_database"
+    }
 }
