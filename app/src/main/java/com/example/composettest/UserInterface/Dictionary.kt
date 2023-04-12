@@ -24,6 +24,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.composettest.R
 import com.example.composettest.Screen
+import com.example.composettest.signData
 
 
 @Composable
@@ -70,11 +71,12 @@ fun Dictionary (navController: NavController) {
         Spacer(modifier = Modifier.height(32.dp))
         Column(Modifier.fillMaxHeight(), verticalArrangement = Arrangement.Center) {
 
+            val testSignData = signData("Hello", R.raw.sample1, R.raw.sample1)
             BodyIconButton(
                 imageVector = Icons.Rounded.List,
                 description = "Practice",
                 name = "Dictionary",
-                filepath = R.raw.sample1,
+                signData = testSignData,
                 navController = navController
             )
         }
@@ -120,12 +122,12 @@ fun BodyIconButton(
     imageVector: ImageVector,
     description: String,
     name: String,
-    filepath: Int,
+    signData: signData,
     navController: NavController
 
 ) {
     IconButton(onClick = {
-        navController.navigate(Screen.SignView.withArgs(filepath))
+        navController.navigate(Screen.SignView.withArgs(signData.filePath, signData.sign))
     },
         Modifier
             .padding(15.dp)

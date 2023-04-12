@@ -3,7 +3,6 @@ package com.example.composettest
 
 import SignView
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavHost
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -23,17 +22,29 @@ fun Navigation() {
             Dictionary(navController = navController)
         }
         composable(
-            route = Screen.SignView.route + "/{filepath}",
+            route = Screen.SignView.route + "/{filepath}/{sign}",
             arguments = listOf(
                 navArgument("filepath") {
                     type = NavType.IntType
+                    defaultValue = R.raw.sample1
+                    nullable = false},
+
+                navArgument("sign") {
+                    type = NavType.StringType
                     defaultValue = R.raw.sample1
                     nullable = false
                 }
             )
         ) { entry ->
-            entry.arguments?.getInt("filepath")
-                ?.let { SignView(navController = navController, filepath = it) }
+            val filePath = entry.arguments?.getInt("filepath")
+
+            val sign = entry.arguments?.getString("sign")
+
+                    if (filePath != null) {
+                        if (sign != null) {
+                            SignView(navController = navController, filepath = filePath, sign = sign)
+                        }
+                }
             }
     }
 }

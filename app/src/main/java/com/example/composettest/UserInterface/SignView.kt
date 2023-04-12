@@ -30,7 +30,7 @@ import androidx.navigation.NavController
 
 
 @Composable
-fun SignView (navController: NavController, filepath: Int){
+fun SignView (navController: NavController, filepath: Int, sign: String){
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = Color(72,69,221)
@@ -59,11 +59,11 @@ fun SignView (navController: NavController, filepath: Int){
             Row(horizontalArrangement = Arrangement.Center,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(12.dp)
+                    .padding(20.dp)
                     .shadow(elevation = 5.dp, shape = RoundedCornerShape(20.dp))
                     .clip(shape = RoundedCornerShape(20.dp))
                     .background(Color(238, 238, 255), shape = RoundedCornerShape(20.dp))){
-                Text(modifier = Modifier.padding(20.dp), text = "Hello", fontSize = 24.sp, textAlign = TextAlign.Center)
+                Text(modifier = Modifier.padding(20.dp), text = sign, fontSize = 24.sp, textAlign = TextAlign.Center)
             }
         }
     }

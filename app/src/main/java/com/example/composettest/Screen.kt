@@ -5,7 +5,7 @@ sealed class Screen(val route: String) {
     object Dictionary : Screen("dictionary")
     object SignView : Screen("sign-view")
 
-    fun withArgs(vararg args: Int): String {
+    fun withArgs(vararg args: Any): String {
         return buildString() {
             append(route)
             args.forEach {arg ->
