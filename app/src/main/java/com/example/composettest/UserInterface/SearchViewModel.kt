@@ -2,7 +2,7 @@ package com.example.composettest.UserInterface
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.composettest.Person
+import com.example.composettest.Domain.model.Person
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*

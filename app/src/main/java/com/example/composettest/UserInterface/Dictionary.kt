@@ -24,7 +24,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.composettest.R
 import com.example.composettest.Screen
-import com.example.composettest.signData
+import com.example.composettest.Domain.model.signData
 
 
 @Composable

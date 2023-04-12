@@ -37,14 +37,35 @@ fun Navigation() {
             )
         ) { entry ->
             val filePath = entry.arguments?.getInt("filepath")
-
             val sign = entry.arguments?.getString("sign")
 
-                    if (filePath != null) {
-                        if (sign != null) {
-                            SignView(navController = navController, filepath = filePath, sign = sign)
+            if (filePath != null) {
+                if (sign != null) {
+                    SignView(navController = navController, filepath = filePath, sign = sign)
                         }
+
                 }
             }
     }
 }
+/*
+abstract class JsonNavType<T> : NavType<T>(isNullableAllowed = false) {
+    abstract fun fromJsonParse(value: String): T
+    abstract fun T.getJsonParse(): String
+
+    override fun get(bundle: Bundle, key: String): T? =
+        bundle.getString(key)?.let { parseValue(it) }
+
+    override fun parseValue(value: String): T = fromJsonParse(value)
+
+    override fun put(bundle: Bundle, key: String, value: T) {
+        bundle.putString(key, value.getJsonParse())
+    }
+}
+
+class ProfileArgType : JsonNavType<LessonData>() {
+    override fun fromJsonParse(value: String): LessonData = Gson().fromJson(value, LessonData::class.java)
+
+    override fun FromProfileArguments.getJsonParse(): String = Gson().toJson(this)
+    }
+ */
