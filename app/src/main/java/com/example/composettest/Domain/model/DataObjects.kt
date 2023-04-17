@@ -1,7 +1,6 @@
 package com.example.composettest.Domain.model
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import androidx.room.*
 
 data class Person(
     val firstName: String,
@@ -20,19 +19,67 @@ data class Person(
     }
 }
 
-data class signData(
-    val sign: String,
-    val filePath: Int,
-    val previewFilePath: Int
-)
-@Entity
+@Entity(tableName = "lesson")
 data class Lesson(
-    @PrimaryKey val id: Int? = null,
+    @PrimaryKey val id: Int?,
     val name: String,
     val lessonNum: Int,
     val signs: Int,
     val questions: Int,
-    val listOfQuestions: MutableList<LessonData> = mutableListOf(),
-    val isCompleted: Boolean
+    val isCompleted: Int
 )
 
+@Entity(tableName = "question")
+data class Question(
+    @PrimaryKey val questionId: Int,
+    val orderNum: Int,
+    val lessonId: Int?,
+    val questionType: String,
+    val signId: Int,
+    val isCorrect: Int
+)
+
+@Entity(tableName = "signData")
+data class signData(
+    @PrimaryKey val signId: Int,
+    val sign: String,
+    val filePath: Int,
+    val previewFilePath: Int
+)
+
+data class LessonQuestions(
+    @Embedded val lesson: Lesson,
+    @Relation(
+        parentColumn = "id",
+        entityColumn = "lessonId"
+    )
+    val lessonQuestions : MutableList<Question>
+
+)
+/*
+data class QuestionSignData(
+
+    @Embedded val questionSignData: signData,
+    @Relation(
+        parentColumn = "signId",
+        entityColumn = "signId"
+    )
+    val questions : MutableList<Question>
+)
+
+
+ */
+data class QuestionSignData(
+    @Embedded val questionSignData: Question,
+    @Relation(
+        parentColumn = "signId",
+        entityColumn = "signId"
+    )
+    val signData: signData
+)
+
+//data class Collect(
+//    val lesson: Lesson,
+ //   val question: Question,
+//    val signData: signData
+//)

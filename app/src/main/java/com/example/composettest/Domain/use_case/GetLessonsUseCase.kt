@@ -7,14 +7,14 @@ import com.example.composettest.Domain.util.OrderType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class GetLessonUseCase(
+class GetLessonsUseCase(
     private val repository: LessonRepository
 ) {
 
     operator fun invoke(
         lessonOrder: LessonOrder = LessonOrder.LessonNum(OrderType.Descending)
     ): Flow<List<Lesson>> {
-        return repository.getLesson().map { lessons ->
+        return repository.getLessons().map { lessons ->
             when(lessonOrder.orderType) {
                 is OrderType.Ascending -> {
                     when(lessonOrder) {

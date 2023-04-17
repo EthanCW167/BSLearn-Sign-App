@@ -29,12 +29,20 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
+import com.example.composettest.Domain.model.Lesson
+import com.example.composettest.Lesson.LessonState
+import com.example.composettest.Lesson.LessonViewModel
 import com.example.composettest.Screen
 import com.example.composettest.ui.theme.ComposetTestTheme
 
 @Composable
-fun HomeScreen(navController: NavController) {
+fun HomeScreen(navController: NavController, viewModel: LessonViewModel = hiltViewModel()) {
+
+    val state = viewModel.state.value
+
     ComposetTestTheme {
         // A surface container using the 'background' color from the theme
         Surface(
@@ -47,7 +55,7 @@ fun HomeScreen(navController: NavController) {
 
         TopBar()
 
-        MainBody(createTempDataList(), navController = navController)
+        MainBody(createTempDataList(), navController = navController, state)
     }
 }
 
@@ -75,7 +83,7 @@ fun InfoBox() {
             .height(70.dp)
             .shadow(elevation = 5.dp, shape = RoundedCornerShape(20.dp))
             .clip(shape = RoundedCornerShape(20.dp))
-            .background(Color(72,69,211), shape = RoundedCornerShape(20.dp)),
+            .background(Color(72, 69, 211), shape = RoundedCornerShape(20.dp)),
         horizontalArrangement = Arrangement.SpaceEvenly,
     ) {
 
@@ -157,7 +165,7 @@ fun TopBarIconButton(
 }
 
 @Composable
-fun MainBody(list: List<TestData>, navController: NavController){
+fun MainBody(list: List<TestData>, navController: NavController, state: LessonState){
     Box() {
         Column(
             Modifier
@@ -179,10 +187,11 @@ fun MainBody(list: List<TestData>, navController: NavController){
             Row(
                 Modifier
                     .padding(horizontal = 10.dp)
+                    .padding()
                     .fillMaxWidth()
                     .shadow(elevation = 5.dp, shape = RoundedCornerShape(20.dp))
                     .height(120.dp)
-                    .background(Color(238,238,255), shape = RoundedCornerShape(20.dp))
+                    .background(Color(238, 238, 255), shape = RoundedCornerShape(20.dp))
 
                 /*.border(
                     border = BorderStroke(width = 1.dp, color = Color.Black),
@@ -196,15 +205,17 @@ fun MainBody(list: List<TestData>, navController: NavController){
                         .fillMaxWidth()
                         .wrapContentHeight()
                         .padding(top = 5.dp)
-                        .padding(horizontal = 5.dp)
-                ) {
-                    items(
-                        items = list
-                    ) { item ->
+                        .padding(horizontal = 15.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceEvenly
 
-                        LessonCard(testData = item) {
+                ) {
+                    items(state.lessons) { lesson ->
+
+                        LessonCard(lessonData = lesson) {
 
                         }
+                        Icon(imageVector = Icons.Default.ArrowForward, contentDescription = "Arrow", modifier = Modifier.size(40.dp))
                     }
                 }
             }
@@ -269,7 +280,7 @@ fun MainBodyIconButton(
             .size(150.dp)
             .shadow(elevation = 5.dp, shape = RoundedCornerShape(20.dp))
             .clip(shape = RoundedCornerShape(20.dp))
-            .background(Color(238,238,255), shape = RoundedCornerShape(20.dp))) {
+            .background(Color(238, 238, 255), shape = RoundedCornerShape(20.dp))) {
         Column(verticalArrangement = Arrangement.SpaceEvenly, horizontalAlignment = Alignment.CenterHorizontally) {
 
             Icon(imageVector = imageVector, contentDescription = description, Modifier.size(120.dp))
@@ -280,11 +291,11 @@ fun MainBodyIconButton(
 
 
 @Composable
-fun LessonCard(testData: TestData, onItemClick: () -> Unit){
+fun LessonCard(lessonData: Lesson, onItemClick: () -> Unit){
     Card(
         Modifier
             .size(90.dp)
-            .padding(10.dp)
+            .padding(5.dp)
             .clickable(
                 interactionSource = MutableInteractionSource(),
                 indication = rememberRipple(bounded = true, color = Color.Black),
@@ -304,9 +315,9 @@ fun LessonCard(testData: TestData, onItemClick: () -> Unit){
                         Color.Black, shape = RoundedCornerShape(10.dp)
                     ), contentAlignment = Alignment.Center
             ) {
-                Text(text = testData.lessonNum, textAlign = TextAlign.Center, color = Color.White, fontSize = 26.sp)
+                Text(text = "${lessonData.lessonNum}", textAlign = TextAlign.Center, color = Color.White, fontSize = 26.sp)
             }
-            Text(text = testData.title, textAlign = TextAlign.Center)
+            Text(text = lessonData.name, textAlign = TextAlign.Center)
         }
     }
 }
@@ -320,7 +331,7 @@ fun ProfileCard(){
             modifier = Modifier
                 .size(120.dp)
                 .clip(CircleShape)
-                .background(Color(238,238,255)),
+                .background(Color(238, 238, 255)),
             contentAlignment = Alignment.Center
         ) {
             Icon(imageVector = Icons.Default.Person, contentDescription = "Profile Placeholder", Modifier.size(60.dp))

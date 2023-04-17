@@ -71,7 +71,7 @@ fun Dictionary (navController: NavController) {
         Spacer(modifier = Modifier.height(32.dp))
         Column(Modifier.fillMaxHeight(), verticalArrangement = Arrangement.Center) {
 
-            val testSignData = signData("Hello", R.raw.sample1, R.raw.sample1)
+            val testSignData = signData(1,"Hello", R.raw.sample1, R.raw.sample1)
             BodyIconButton(
                 imageVector = Icons.Rounded.List,
                 description = "Practice",

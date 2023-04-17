@@ -6,7 +6,7 @@ import com.example.composettest.Data.data_source.LessonDatabase
 import com.example.composettest.Data.repository.LessonRepositoryImpl
 import com.example.composettest.Domain.repository.LessonRepository
 import com.example.composettest.Domain.use_case.DeleteLessonUseCase
-import com.example.composettest.Domain.use_case.GetLessonUseCase
+import com.example.composettest.Domain.use_case.GetLessonsUseCase
 import com.example.composettest.Domain.use_case.LessonUseCases
 import dagger.Module
 import dagger.Provides
@@ -24,7 +24,7 @@ object AppModule {
             app,
             LessonDatabase::class.java,
             LessonDatabase.DATABASE_NAME
-        ).build()
+        ).createFromAsset("database/LessonDatabase.db").build()
     }
 
     @Provides
@@ -37,7 +37,7 @@ object AppModule {
     @Singleton
     fun provideLessonUseCases(repository: LessonRepository): LessonUseCases {
         return LessonUseCases(
-            getLessonUseCase = GetLessonUseCase(repository),
+            getLessonsUseCase = GetLessonsUseCase(repository),
             deleteLessonUseCase = DeleteLessonUseCase(repository)
         )
     }
