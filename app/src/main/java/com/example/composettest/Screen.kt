@@ -13,4 +13,6 @@ sealed class Screen(val route: String) {
             }
         }
     }
+
+    object LessonPreviewScreen : Screen("lesson_preview")
 }

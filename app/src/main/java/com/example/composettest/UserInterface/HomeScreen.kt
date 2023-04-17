@@ -212,9 +212,8 @@ fun MainBody(list: List<TestData>, navController: NavController, state: LessonSt
                 ) {
                     items(state.lessons) { lesson ->
 
-                        LessonCard(lessonData = lesson) {
+                        LessonCard(lessonData = lesson, navController = navController)
 
-                        }
                         Icon(imageVector = Icons.Default.ArrowForward, contentDescription = "Arrow", modifier = Modifier.size(40.dp))
                     }
                 }
@@ -291,16 +290,14 @@ fun MainBodyIconButton(
 
 
 @Composable
-fun LessonCard(lessonData: Lesson, onItemClick: () -> Unit){
+fun LessonCard(lessonData: Lesson, navController: NavController){
     Card(
         Modifier
             .size(90.dp)
             .padding(5.dp)
-            .clickable(
-                interactionSource = MutableInteractionSource(),
-                indication = rememberRipple(bounded = true, color = Color.Black),
-                onClick = onItemClick
-            ),
+            .clickable {navController.navigate(
+                Screen.LessonPreviewScreen.route + "?id=${lessonData.id}"
+            )},
         backgroundColor = Color.LightGray) {
         Column(
             verticalArrangement = Arrangement.Center,

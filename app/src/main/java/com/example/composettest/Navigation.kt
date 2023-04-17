@@ -3,11 +3,13 @@ package com.example.composettest
 
 import SignView
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavArgument
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.composettest.Lesson.LessonPreviewScreen
 import com.example.composettest.UserInterface.Dictionary
 import com.example.composettest.UserInterface.HomeScreen
 
@@ -46,6 +48,16 @@ fun Navigation() {
 
                 }
             }
+        composable(route = Screen.LessonPreviewScreen.route + "?id={id}",
+            arguments = listOf(
+            navArgument("id") {
+                type = NavType.IntType
+                defaultValue = 0
+            }
+        )) {
+            val lessonId = it.arguments?.getInt("id") ?: 0
+            LessonPreviewScreen(navController = navController, id = lessonId)
+        }
     }
 }
 /*
