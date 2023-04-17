@@ -18,11 +18,15 @@ interface LessonRepository {
 
     suspend fun getLessonByIdWithQuestions(id: Int): LessonQuestions?
 
-    suspend fun getQuestionByIdWithSignData(questionId: Int): QuestionSignData?
+    suspend fun getQuestionByIdWithSignData(lessonId: Int): Flow<List<QuestionSignData>>
 
     suspend fun getQuestionByIdByOrder(lessonId: Int, orderNum: Int): Question?
 
     suspend fun getQuestionBylessonIdByOrderNumWithSignData(lessonId: Int, orderNum: Int): QuestionSignData?
 
-    //suspend fun collect(id: Int, qId: Int): Collect?
+    fun getQuestionsByLessonId(lessonId: Int): Flow<List<Question>>
+
+    suspend fun getSignDataBySignId(signId: Int): signData?
+
+
 }

@@ -109,7 +109,7 @@ fun title(name: String, lessonNum: Int){
         verticalAlignment = Alignment.CenterVertically
 
         ) {
-        Text(text = name, fontSize = 22.sp, textAlign = TextAlign.Start)
+        Text(text = name, fontSize = 18.sp, textAlign = TextAlign.Start)
         lessonNumBox(lessonNum)
     }
 }

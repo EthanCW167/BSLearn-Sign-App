@@ -5,10 +5,7 @@ import androidx.room.Room
 import com.example.composettest.Data.data_source.LessonDatabase
 import com.example.composettest.Data.repository.LessonRepositoryImpl
 import com.example.composettest.Domain.repository.LessonRepository
-import com.example.composettest.Domain.use_case.DeleteLessonUseCase
-import com.example.composettest.Domain.use_case.GetLessonUseCase
-import com.example.composettest.Domain.use_case.GetLessonsUseCase
-import com.example.composettest.Domain.use_case.LessonUseCases
+import com.example.composettest.Domain.use_case.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -40,7 +37,9 @@ object AppModule {
         return LessonUseCases(
             getLessonsUseCase = GetLessonsUseCase(repository),
             deleteLessonUseCase = DeleteLessonUseCase(repository),
-            getLessonUseCase = GetLessonUseCase(repository)
+            getLessonUseCase = GetLessonUseCase(repository),
+            getQuestionsByIdUseCase = GetQuestionsByIdUseCase(repository),
+            getSignDataByIdUseCase = GetSignDataByIdUseCase(repository)
         )
     }
 }
