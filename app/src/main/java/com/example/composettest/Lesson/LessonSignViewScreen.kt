@@ -26,6 +26,7 @@ import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import androidx.media3.ui.PlayerView
 import androidx.navigation.NavController
+import com.example.composettest.Domain.model.Question
 import com.example.composettest.R
 import com.example.composettest.Screen
 
@@ -34,10 +35,11 @@ fun LessonSignViewScreen(
     navController: NavController,
     viewModel: LessonQuestionViewModel = hiltViewModel(),
     orderNum: Int,
-    lessonId: Int
+    lessonId: Int,
+    numQuestion: Int
 ){
 
-    viewModel.getQuestionRedo(lessonId, orderNum)
+    //viewModel.getQuestionRedo(lessonId, orderNum)
 
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -77,7 +79,7 @@ fun LessonSignViewScreen(
             Column(modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.Bottom,
                 horizontalAlignment = Alignment.CenterHorizontally) {
-                Button(onClick = {navController.navigate(Screen.LessonQuestionMultiChoiceScreen.route + "?lessonId=${lessonId}&orderNum=${2}")} ,modifier = Modifier
+                Button(onClick = {viewModel.nextScreen(orderNum, numQuestion, navController)} ,modifier = Modifier
                     .width(200.dp)
                     .height(70.dp)
                     .padding(15.dp),
@@ -130,3 +132,4 @@ private fun  getSimpleExoPlayer(context: Context, filepath: Int): ExoPlayer {
         repeatMode = Player.REPEAT_MODE_ALL
     }
 }
+

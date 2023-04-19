@@ -58,7 +58,7 @@ fun LessonPreviewScreen(
             if (title != null) {
                 if (signs != null) {
                     if (questions != null) {
-                        PreviewDescription(id = id, name = title, lessonNum = lessonNum, signs = signs, questions = questions, description = "Ipsum Lorum", navController = navController)
+                        PreviewDescription(id = id, name = title, lessonNum = lessonNum, signs = signs, questions = questions, description = "Ipsum Lorum", navController = navController, viewModel = viewModel)
                     }
                 }
             }
@@ -68,7 +68,7 @@ fun LessonPreviewScreen(
 }
 
 @Composable
-fun PreviewDescription(id: Int, name: String, lessonNum: Int, signs: Int, questions: Int, description: String, navController: NavController){
+fun PreviewDescription(id: Int, name: String, lessonNum: Int, signs: Int, questions: Int, description: String, navController: NavController, viewModel: LessonPreviewViewModel){
     Column(
         Modifier
             .padding(8.dp)
@@ -96,7 +96,7 @@ fun PreviewDescription(id: Int, name: String, lessonNum: Int, signs: Int, questi
         Column(modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Bottom,
             horizontalAlignment = Alignment.CenterHorizontally) {
-            Button(onClick = {navController.navigate(Screen.LessonSignViewScreen.route + "?lessonId=${id}&orderNum=${1}")} ,modifier = Modifier
+            Button(onClick = {navController.navigate(Screen.LessonSignViewScreen.route + "?lessonId=${id}&orderNum=${1}&numQuestion=${viewModel.signs!! + viewModel.questions!!}")} ,modifier = Modifier
                 .width(200.dp)
                 .height(70.dp)
                 .padding(15.dp),

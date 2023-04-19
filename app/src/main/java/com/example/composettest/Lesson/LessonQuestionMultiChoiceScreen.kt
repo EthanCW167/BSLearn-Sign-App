@@ -2,14 +2,13 @@ package com.example.composettest.Lesson
 
 import android.content.Context
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -29,17 +28,28 @@ import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import androidx.media3.ui.PlayerView
 import androidx.navigation.NavController
+import com.example.composettest.Domain.model.Question
+import com.example.composettest.Screen
 
 @Composable
 fun LessonQuestionMultiChoiceScreen (
     navController: NavController,
     viewModel: LessonQuestionViewModel = hiltViewModel(),
     orderNum: Int,
-    lessonId: Int
+    lessonId: Int,
+    numQuestion: Int
+
 ){
 
-    viewModel.getQuestionRedo(lessonId,orderNum)
-    //println(viewModel.filePath)
+    viewModel.getQuestionRedo(lessonId,orderNum,numQuestion)
+
+    var selected by remember { mutableStateOf(false) }
+    var selected2 by remember { mutableStateOf(false) }
+    var selected3 by remember { mutableStateOf(false) }
+    var selected4 by remember { mutableStateOf(false) }
+
+    var answer = viewModel.sign
+    var guess: String
 
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -74,15 +84,63 @@ fun LessonQuestionMultiChoiceScreen (
                     .shadow(elevation = 5.dp, shape = RoundedCornerShape(20.dp))
                     .clip(shape = RoundedCornerShape(20.dp))
                     .background(Color(238, 238, 255), shape = RoundedCornerShape(20.dp))){
-                viewModel.sign?.let { Text(modifier = Modifier.padding(20.dp), text = it, fontSize = 24.sp, textAlign = TextAlign.Center) }
+                Text(modifier = Modifier.padding(20.dp), text = "What is the word being signed?", fontSize = 24.sp, textAlign = TextAlign.Center)
             }
             Column(modifier = Modifier
-                .fillMaxSize()) {
-                Row(modifier = Modifier.fillMaxWidth()) {
-                   selectionButton(text = "Test")
-                   selectionButton(text = "Test2")
-                }
+                .fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally) {
+                Row(modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(5.dp),
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    SelectableButton(selected = selected, content = "press", onClick = {
+                        selected = !selected
+                        selected2 = false
+                        selected3 = false
+                        selected4 = false
+                        guess = "Press"})
+                    SelectableButton(selected = selected2, content = "press2", onClick = {
+                        selected2 = !selected2
+                        selected = false
+                        selected3 = false
+                        selected4 = false
+                        guess = "Press2" })
 
+                }
+                Row(modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(5.dp),
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    SelectableButton(selected = selected3, content = "press3", onClick = {
+                        selected3 = !selected3
+                        selected = false
+                        selected2 = false
+                        selected4 = false
+                        guess = "Press3"})
+                    SelectableButton(selected = selected4, content = "press4", onClick = {
+                        selected4 = !selected4
+                        selected = false
+                        selected2 = false
+                        selected3 = false
+                        guess = "Press4"})
+
+                }
+                Column(modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Bottom,
+                    horizontalAlignment = Alignment.CenterHorizontally) {
+                    Button(onClick = {viewModel.nextScreen(orderNum, numQuestion, navController)} ,modifier = Modifier
+                        .width(200.dp)
+                        .height(70.dp)
+                        .padding(15.dp),
+                        shape = RoundedCornerShape(20.dp),
+                        colors = ButtonDefaults.buttonColors(backgroundColor = Color(72,69,221)))  {
+                        Text(text = "Next", color = Color.White)
+
+                    }
+
+            }
 
             }
         }
@@ -115,6 +173,35 @@ fun selectionButton(text: String) {
                 color = Color.White
             )
         }
+    }
+}
+
+
+@Composable
+fun SelectableButton(
+    selected: Boolean,
+    content: String,
+    Color: Color =
+        if (selected) Color(199,199,255)
+        else Color(238, 238, 255),
+    onClick: () -> Unit
+
+){
+
+    Column(modifier = Modifier
+        .padding(5.dp)
+        .width(150.dp)
+        .height(70.dp)
+        .shadow(elevation = 5.dp, shape = RoundedCornerShape(20.dp))
+        .clip(shape = RoundedCornerShape(20.dp))
+        .clickable {
+            onClick()
+        }
+        .background(Color, shape = RoundedCornerShape(20.dp)),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center)
+        {
+        Text(text = content, fontSize = 22.sp)
     }
 }
 
@@ -154,3 +241,25 @@ private fun getSimpleExoPlayer(context: Context, filepath: Int): ExoPlayer {
         repeatMode = Player.REPEAT_MODE_ALL
     }
 }
+
+
+
+/*
+private fun decideNextScreen(lessonId: Int, orderNum: Int, navController: NavController,viewModel: LessonQuestionViewModel){
+
+    viewModel.getQuestionRedo(lessonId, orderNum)
+
+    println(viewModel.signId)
+    println(viewModel.questionType)
+    println(viewModel.getOrderNum)
+
+    if (viewModel.questionType == "multiple_choice") {navController.navigate(Screen.LessonQuestionMultiChoiceScreen.route + "?lessonId=${lessonId}&orderNum=${orderNum}")}
+    else if (viewModel.questionType == "sign") {navController.navigate(Screen.LessonSignViewScreen.route + "?lessonId=${lessonId}&orderNum=${orderNum}")}
+    else if (viewModel.questionType == "type_question") {navController.navigate(Screen.LessonSignViewScreen.route + "?lessonId=${lessonId}&orderNum=${orderNum}")}
+    else if (viewModel.questionType == "match_signs") {navController.navigate(Screen.LessonSignViewScreen.route + "?lessonId=${lessonId}&orderNum=${orderNum}")}
+}
+
+//navController.navigate(Screen.LessonQuestionMultiChoiceScreen.route + "?lessonId=${lessonId}&orderNum=${orderNum}")
+//navController.navigate(Screen.LessonSignViewScreen.route + "?lessonId=${lessonId}&orderNum=${orderNum}")
+
+ */

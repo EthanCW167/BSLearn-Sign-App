@@ -61,7 +61,7 @@ fun Navigation() {
             val lessonId = it.arguments?.getInt("id") ?: 0
             LessonPreviewScreen(navController = navController, id = lessonId)
         }
-        composable(route = Screen.LessonSignViewScreen.route + "?orderNum={orderNum}&lessonId={lessonId}",
+        composable(route = Screen.LessonSignViewScreen.route + "?orderNum={orderNum}&lessonId={lessonId}&numQuestions={numQuestions}",
         arguments = listOf(
             navArgument("orderNum"){
                 type = NavType.IntType
@@ -70,12 +70,17 @@ fun Navigation() {
             navArgument("lessonId"){
                 type = NavType.IntType
                 defaultValue = 0
+            },
+            navArgument("numQuestion"){
+                type = NavType.IntType
+                defaultValue = 1
             }
 
         )) {
             val orderNum = it.arguments?.getInt("orderNum") ?: 1
             val lessonId = it.arguments?.getInt("lessonId") ?: 0
-            LessonSignViewScreen(navController = navController, orderNum = orderNum, lessonId = lessonId)
+            val numQuestion =  it.arguments?.getInt("numQuestion") ?: 1
+            LessonSignViewScreen(navController = navController, orderNum = orderNum, lessonId = lessonId, numQuestion = numQuestion)
         }
         composable(route = Screen.LessonTest.route + "?lessonId={lessonId}&orderNum={orderNum}",
             arguments = listOf(
@@ -93,7 +98,7 @@ fun Navigation() {
             val orderNum = it.arguments?.getInt("orderNum") ?: 1
             LessonTest(navController = navController, questionId = lessonId, orderNum = orderNum)
         }
-        composable(route = Screen.LessonQuestionMultiChoiceScreen.route + "?lessonId={lessonId}&orderNum={orderNum}",
+        composable(route = Screen.LessonQuestionMultiChoiceScreen.route + "?lessonId={lessonId}&orderNum={orderNum}&numQuestions={numQuestions}",
             arguments = listOf(
                 navArgument("lessonId"){
                     type = NavType.IntType
@@ -102,12 +107,17 @@ fun Navigation() {
                 navArgument("orderNum"){
                     type = NavType.IntType
                     defaultValue = 1
+                },
+                navArgument("numQuestion"){
+                    type = NavType.IntType
+                    defaultValue = 1
                 }
             )
         ){
             val lessonId = it.arguments?.getInt("lessonId") ?: 0
             val orderNum = it.arguments?.getInt("orderNum") ?: 1
-            LessonQuestionMultiChoiceScreen(navController = navController, orderNum = orderNum, lessonId = lessonId)
+            val numQuestion =  it.arguments?.getInt("numQuestion") ?: 1
+            LessonQuestionMultiChoiceScreen(navController = navController, orderNum = orderNum, lessonId = lessonId, numQuestion = numQuestion)
         }
     }
 }
