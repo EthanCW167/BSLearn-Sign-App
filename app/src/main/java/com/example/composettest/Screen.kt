@@ -15,4 +15,10 @@ sealed class Screen(val route: String) {
     }
 
     object LessonPreviewScreen : Screen("lesson_preview")
+
+    object LessonSignViewScreen : Screen("lesson_sign_view")
+
+    object LessonTest: Screen("lesson_test")
+
+    object LessonQuestionMultiChoiceScreen: Screen("lesson_multi_choice")
 }

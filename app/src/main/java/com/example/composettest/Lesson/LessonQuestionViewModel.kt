@@ -5,11 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.composettest.Domain.model.Question
 import com.example.composettest.Domain.model.signData
 import com.example.composettest.Domain.use_case.LessonUseCases
-import com.example.composettest.Domain.util.OrderType
-import com.example.composettest.Domain.util.QuestionOrder
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn
@@ -25,30 +22,60 @@ class LessonQuestionViewModel @Inject constructor(
 
 ): ViewModel() {
 
-    private val _questions = mutableStateOf(QuestionState())
-    val questions_state: State<QuestionState> = _questions
+    var getOrderNum: Int? = null
 
-    var sign_data: signData? = null
+    var getLessonId: Int? = null
 
-    private var getQuestionsJob: Job? = null
+    var getQuestionId: Int? = null
 
+    var questionType: String? = null
+
+    var signId: Int? = null
+
+    var isCorrect: Int? = null
+
+    var sign: String? = null
+
+    var filePath: Int? = null
+
+    var previewFilePath: Int? = null
+
+    /*
     init {
         savedStateHandle.get<Int>("lessonId")?.let { lessonId ->
-            if(lessonId != -1) {
-                getQuestionsByLessonId(QuestionOrder.orderNum(OrderType.Descending), lessonId = lessonId)
+            savedStateHandle.get<Int>("orderNum")?.let { orderNum ->
+                getQuestionRedo(lessonId, orderNum)
+                /*
+                viewModelScope.launch {
+
+                    lessonUseCases.getQuestionByIdByOrderUseCase(lessonId, orderNum)?.also { question ->
+                        getOrderNum = question.orderNum
+                        getLessonId = question.lessonId
+                        getQuestionId = question.questionId
+                        questionType = question.questionType
+                        signId = question.signId
+                        isCorrect = question.isCorrect
+
+                        println(signId)
+                    }
+
+                    signId?.let {
+                        lessonUseCases.getSignDataByIdUseCase(it)?.also { signData ->
+                            sign = signData.sign
+                            filePath = signData.filePath
+                            previewFilePath = signData.previewFilePath
+                        }
+                    }
+                }
+
+                 */
+
+
             }
         }
-    }
 
-    private fun getQuestionsByLessonId(questionOrder: QuestionOrder, lessonId: Int){
-        getQuestionsJob?.cancel()
-        lessonUseCases.getQuestionsByIdUseCase(lessonId)?.onEach { questions ->
-            _questions.value = questions_state.value.copy(questions = questions, questionOrder = questionOrder)
-        }
-            ?.launchIn(viewModelScope)
-    }
-
-    suspend fun getSignDataBySignId(signId: Int){
+    /*
+    fun getSignDataBySignId(signId: Int){
         viewModelScope.launch {
             lessonUseCases.getSignDataByIdUseCase(signId)?.also { signData ->
                 sign_data = signData
@@ -56,5 +83,32 @@ class LessonQuestionViewModel @Inject constructor(
 
 
         }
+
+     */
+    }
+
+     */
+
+    fun getQuestionRedo(lessonId: Int, orderNum: Int){
+            viewModelScope.launch {
+
+                lessonUseCases.getQuestionByIdByOrderUseCase(lessonId, orderNum)?.also { question ->
+                    getOrderNum = question.orderNum
+                    getLessonId = question.lessonId
+                    getQuestionId = question.questionId
+                    questionType = question.questionType
+                    signId = question.signId
+                    isCorrect = question.isCorrect
+
+                    println(signId)
+                }
+                signId?.let {
+                    lessonUseCases.getSignDataByIdUseCase(it)?.also { signData ->
+                        sign = signData.sign
+                        filePath = signData.filePath
+                        previewFilePath = signData.previewFilePath
+                    }
+                }
+            }
     }
 }

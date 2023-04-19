@@ -45,8 +45,12 @@ class LessonRepositoryImpl(
         return dao.getQuestionBylessonIdByOrderNumWithSignData(lessonId, orderNum)
     }
 
-    override fun getQuestionsByLessonId(lessonId: Int): Flow<List<Question>> {
+    override fun getQuestionsByLessonId(lessonId: Int): Flow<List<Question>>? {
         return dao.getQuestionsByLessonId(lessonId)
+    }
+
+    override fun getQuestionsByQuestionId(questionId: Int): Flow<List<Question>> {
+        return dao.getQuestionsByQuestionId(questionId)
     }
 
     override suspend fun getSignDataBySignId(signId: Int): signData? {

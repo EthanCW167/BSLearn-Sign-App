@@ -24,7 +24,9 @@ interface LessonRepository {
 
     suspend fun getQuestionBylessonIdByOrderNumWithSignData(lessonId: Int, orderNum: Int): QuestionSignData?
 
-    fun getQuestionsByLessonId(lessonId: Int): Flow<List<Question>>
+    fun getQuestionsByLessonId(lessonId: Int): Flow<List<Question>>?
+
+    fun getQuestionsByQuestionId(questionId: Int): Flow<List<Question>>
 
     suspend fun getSignDataBySignId(signId: Int): signData?
 

@@ -5,5 +5,7 @@ data class LessonUseCases(
     val deleteLessonUseCase: DeleteLessonUseCase,
     val getLessonUseCase: GetLessonUseCase,
     val getQuestionsByIdUseCase: GetQuestionsByIdUseCase,
-    val getSignDataByIdUseCase: GetSignDataByIdUseCase
+    val getSignDataByIdUseCase: GetSignDataByIdUseCase,
+    val getQuestionByQuestionIdUseCase: GetQuestionByQuestionIdUseCase,
+    val getQuestionByIdByOrderUseCase: GetQuestionByIdByOrderUseCase
 )

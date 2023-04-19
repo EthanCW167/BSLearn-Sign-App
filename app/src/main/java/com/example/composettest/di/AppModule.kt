@@ -39,7 +39,9 @@ object AppModule {
             deleteLessonUseCase = DeleteLessonUseCase(repository),
             getLessonUseCase = GetLessonUseCase(repository),
             getQuestionsByIdUseCase = GetQuestionsByIdUseCase(repository),
-            getSignDataByIdUseCase = GetSignDataByIdUseCase(repository)
+            getSignDataByIdUseCase = GetSignDataByIdUseCase(repository),
+            getQuestionByQuestionIdUseCase = GetQuestionByQuestionIdUseCase(repository),
+            getQuestionByIdByOrderUseCase = GetQuestionByIdByOrderUseCase(repository)
         )
     }
 }

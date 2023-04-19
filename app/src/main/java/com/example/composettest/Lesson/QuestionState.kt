@@ -1,10 +1,8 @@
 package com.example.composettest.Lesson
 
 import com.example.composettest.Domain.model.Question
-import com.example.composettest.Domain.util.OrderType
-import com.example.composettest.Domain.util.QuestionOrder
+import kotlinx.coroutines.flow.Flow
 
 data class QuestionState(
-    val questions: List<Question> = emptyList(),
-    val questionOrder: QuestionOrder = QuestionOrder.orderNum(OrderType.Descending)
+    val questions: List<Question> = emptyList()
 )

@@ -127,7 +127,7 @@ fun BodyIconButton(
 
 ) {
     IconButton(onClick = {
-        navController.navigate(Screen.SignView.withArgs(signData.filePath, signData.sign))
+        navController.navigate(Screen.SignView.route + "?filePath=${R.raw.sample1}&sign=${"Hello"}")
     },
         Modifier
             .padding(15.dp)

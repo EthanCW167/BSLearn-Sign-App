@@ -35,6 +35,7 @@ import androidx.navigation.NavController
 import com.example.composettest.Domain.model.Lesson
 import com.example.composettest.Lesson.LessonState
 import com.example.composettest.Lesson.LessonViewModel
+import com.example.composettest.R
 import com.example.composettest.Screen
 import com.example.composettest.ui.theme.ComposetTestTheme
 

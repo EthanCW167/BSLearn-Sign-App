@@ -2,6 +2,7 @@ package com.example.composettest.Lesson
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -20,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.composettest.Screen
 
 @Composable
 fun LessonPreviewScreen(
@@ -56,22 +58,17 @@ fun LessonPreviewScreen(
             if (title != null) {
                 if (signs != null) {
                     if (questions != null) {
-                        PreviewDescription(name = title, lessonNum = lessonNum, signs = signs, questions = questions, description = "Ipsum Lorum", previewImage = 0)
+                        PreviewDescription(id = id, name = title, lessonNum = lessonNum, signs = signs, questions = questions, description = "Ipsum Lorum", navController = navController)
                     }
                 }
             }
-        }
-        Button(onClick = { /*TODO*/ },modifier = Modifier
-            .width(100.dp)
-            .padding(20.dp))  {
-
         }
 
     }
 }
 
 @Composable
-fun PreviewDescription(name: String, lessonNum: Int, signs: Int, questions: Int, description: String, previewImage: Int){
+fun PreviewDescription(id: Int, name: String, lessonNum: Int, signs: Int, questions: Int, description: String, navController: NavController){
     Column(
         Modifier
             .padding(8.dp)
@@ -96,15 +93,28 @@ fun PreviewDescription(name: String, lessonNum: Int, signs: Int, questions: Int,
         Text(text = description, modifier = Modifier
             .padding(horizontal = 20.dp)
             .fillMaxWidth())
+        Column(modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Bottom,
+            horizontalAlignment = Alignment.CenterHorizontally) {
+            Button(onClick = {navController.navigate(Screen.LessonSignViewScreen.route + "?lessonId=${id}&orderNum=${1}")} ,modifier = Modifier
+                .width(200.dp)
+                .height(70.dp)
+                .padding(15.dp),
+                shape = RoundedCornerShape(20.dp),
+                colors = ButtonDefaults.buttonColors(backgroundColor = Color(72,69,221)))  {
+                Text(text = "Begin Lesson", color = Color.White)
+
+            }}
     }
 }
 
 @Composable
 fun title(name: String, lessonNum: Int){
-    Row(Modifier
-        .fillMaxWidth()
-        .padding(top = 8.dp)
-        .padding(horizontal = 15.dp),
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .padding(top = 8.dp)
+            .padding(horizontal = 15.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
 

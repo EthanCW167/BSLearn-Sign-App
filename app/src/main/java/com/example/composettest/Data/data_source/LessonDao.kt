@@ -37,7 +37,10 @@ interface LessonDao {
     suspend fun getQuestionsByIdByOrder(lessonId: Int, orderNum: Int): Question?
 
     @Query("SELECT * FROM question WHERE lessonId = :lessonId")
-    fun getQuestionsByLessonId(lessonId: Int): Flow<List<Question>>
+    fun getQuestionsByLessonId(lessonId: Int): Flow<List<Question>>?
+
+    @Query("SELECT * FROM question WHERE questionId = :questionId")
+    fun getQuestionsByQuestionId(questionId: Int): Flow<List<Question>>
 
     @Query("SELECT * FROM signData WHERE signId = :signId")
     suspend fun getSignDataBySignId(signId: Int): signData?

@@ -10,6 +10,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.composettest.Lesson.LessonPreviewScreen
+import com.example.composettest.Lesson.LessonQuestionMultiChoiceScreen
+import com.example.composettest.Lesson.LessonSignViewScreen
+import com.example.composettest.Lesson.LessonTest.LessonTest
 import com.example.composettest.UserInterface.Dictionary
 import com.example.composettest.UserInterface.HomeScreen
 
@@ -24,7 +27,7 @@ fun Navigation() {
             Dictionary(navController = navController)
         }
         composable(
-            route = Screen.SignView.route + "/{filepath}/{sign}",
+            route = Screen.SignView.route + "?filePath={filepath}&sign={sign}",
             arguments = listOf(
                 navArgument("filepath") {
                     type = NavType.IntType
@@ -33,13 +36,13 @@ fun Navigation() {
 
                 navArgument("sign") {
                     type = NavType.StringType
-                    defaultValue = R.raw.sample1
+                    defaultValue = "hello"
                     nullable = false
                 }
             )
-        ) { entry ->
-            val filePath = entry.arguments?.getInt("filepath")
-            val sign = entry.arguments?.getString("sign")
+        ) {
+            val filePath = it.arguments?.getInt("filepath")
+            val sign = it.arguments?.getString("sign")
 
             if (filePath != null) {
                 if (sign != null) {
@@ -58,8 +61,57 @@ fun Navigation() {
             val lessonId = it.arguments?.getInt("id") ?: 0
             LessonPreviewScreen(navController = navController, id = lessonId)
         }
+        composable(route = Screen.LessonSignViewScreen.route + "?orderNum={orderNum}&lessonId={lessonId}",
+        arguments = listOf(
+            navArgument("orderNum"){
+                type = NavType.IntType
+                defaultValue = 1
+            },
+            navArgument("lessonId"){
+                type = NavType.IntType
+                defaultValue = 0
+            }
+
+        )) {
+            val orderNum = it.arguments?.getInt("orderNum") ?: 1
+            val lessonId = it.arguments?.getInt("lessonId") ?: 0
+            LessonSignViewScreen(navController = navController, orderNum = orderNum, lessonId = lessonId)
+        }
+        composable(route = Screen.LessonTest.route + "?lessonId={lessonId}&orderNum={orderNum}",
+            arguments = listOf(
+                navArgument("lessonId"){
+                    type = NavType.IntType
+                    defaultValue = 0
+                },
+                navArgument("orderNum"){
+                    type = NavType.IntType
+                    defaultValue = 1
+                }
+            )
+        ){
+            val lessonId = it.arguments?.getInt("lessonId") ?: 0
+            val orderNum = it.arguments?.getInt("orderNum") ?: 1
+            LessonTest(navController = navController, questionId = lessonId, orderNum = orderNum)
+        }
+        composable(route = Screen.LessonQuestionMultiChoiceScreen.route + "?lessonId={lessonId}&orderNum={orderNum}",
+            arguments = listOf(
+                navArgument("lessonId"){
+                    type = NavType.IntType
+                    defaultValue = 0
+                },
+                navArgument("orderNum"){
+                    type = NavType.IntType
+                    defaultValue = 1
+                }
+            )
+        ){
+            val lessonId = it.arguments?.getInt("lessonId") ?: 0
+            val orderNum = it.arguments?.getInt("orderNum") ?: 1
+            LessonQuestionMultiChoiceScreen(navController = navController, orderNum = orderNum, lessonId = lessonId)
+        }
     }
 }
+
 /*
 abstract class JsonNavType<T> : NavType<T>(isNullableAllowed = false) {
     abstract fun fromJsonParse(value: String): T
