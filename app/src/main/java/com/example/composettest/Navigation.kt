@@ -12,6 +12,7 @@ import androidx.navigation.navArgument
 import com.example.composettest.Lesson.LessonPreviewScreen
 import com.example.composettest.Lesson.LessonQuestionMultiChoiceScreen
 import com.example.composettest.Lesson.LessonSignViewScreen
+import com.example.composettest.Lesson.LessonSummaryScreen
 import com.example.composettest.Lesson.LessonTest.LessonTest
 import com.example.composettest.UserInterface.Dictionary
 import com.example.composettest.UserInterface.HomeScreen
@@ -118,6 +119,17 @@ fun Navigation() {
             val orderNum = it.arguments?.getInt("orderNum") ?: 1
             val numQuestion =  it.arguments?.getInt("numQuestion") ?: 1
             LessonQuestionMultiChoiceScreen(navController = navController, orderNum = orderNum, lessonId = lessonId, numQuestion = numQuestion)
+        }
+        composable(route = Screen.LessonSummaryScreen.route + "?lessonId={lessonId}",
+            arguments = listOf(
+                navArgument("lessonId"){
+                    type = NavType.IntType
+                    defaultValue = 0
+                }
+            )
+        ){
+            val lessonId = it.arguments?.getInt("lessonId") ?: 0
+            LessonSummaryScreen(navController = navController, lessonId = lessonId)
         }
     }
 }
