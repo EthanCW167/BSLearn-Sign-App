@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.composettest.Domain.model.Question
+import com.example.composettest.Domain.model.signData
 
 @Composable
 fun LessonSummaryScreen(
@@ -112,7 +113,10 @@ fun LessonSummaryScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 items(state.questions) { question ->
-                    QuestionSummaryCard(question = question)
+                    if (question.questionType != "sign") {
+                        viewModel.getSignData(question)
+                        viewModel.signData?.let { QuestionSummaryCard(question = question, it) }
+                    }
                 }
             }
 
@@ -127,7 +131,7 @@ fun LessonSummaryScreen(
                 modifier = Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Button(onClick = { },
+                Button(onClick = { viewModel.lesson?.let { viewModel.insertLesson(it) } },
                     modifier = Modifier
                         .width(200.dp)
                         .height(60.dp),
@@ -143,7 +147,10 @@ fun LessonSummaryScreen(
     }
 
 @Composable
-fun QuestionSummaryCard(question: Question){
+fun QuestionSummaryCard(question: Question, signData: signData){
+    val colorType: Color =
+    if (question.isCorrect == 1) Color(106, 192, 115)
+    else Color(233,80,80)
     Row(
         Modifier
             .fillMaxWidth()
@@ -162,7 +169,8 @@ fun QuestionSummaryCard(question: Question){
                 Modifier
                     .width(160.dp)
                     .height(70.dp)
-                    .background(Color(106, 192, 115), shape = RoundedCornerShape(20.dp)),
+                    .background(
+                        colorType, shape = RoundedCornerShape(20.dp)),
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically) {
                 Text(text = "Q1", fontSize = 20.sp)

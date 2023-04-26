@@ -30,5 +30,6 @@ interface LessonRepository {
 
     suspend fun getSignDataBySignId(signId: Int): signData?
 
+    suspend fun insertQuestion(question: Question)
 
 }

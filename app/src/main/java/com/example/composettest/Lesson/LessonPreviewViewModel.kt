@@ -26,6 +26,9 @@ class LessonPreviewViewModel @Inject constructor(
 
     var isCompleted: Int? = null
 
+    var previewFilePath: Int? = null
+
+    var description: String? = null
 
     init {
         savedStateHandle.get<Int>("id")?.let {id ->
@@ -38,6 +41,8 @@ class LessonPreviewViewModel @Inject constructor(
                         signs = lesson.signs
                         questions = lesson.questions
                         isCompleted = lesson.isCompleted
+                        previewFilePath = lesson.previewFilePath
+                        description = lesson.description
                     }
                 }
             }

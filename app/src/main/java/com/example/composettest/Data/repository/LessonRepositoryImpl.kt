@@ -60,4 +60,9 @@ class LessonRepositoryImpl(
 //    override suspend fun collect(id: Int, qId: Int): Collect? {
 //        return dao.collect(id, qId)
 //    }
+
+    override suspend fun insertQuestion(question: Question){
+        return dao.insertQuestion(question)
+    }
+
 }

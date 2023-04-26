@@ -42,7 +42,9 @@ object AppModule {
             getSignDataByIdUseCase = GetSignDataByIdUseCase(repository),
             getQuestionByQuestionIdUseCase = GetQuestionByQuestionIdUseCase(repository),
             getQuestionByIdByOrderUseCase = GetQuestionByIdByOrderUseCase(repository),
-            getQuestionsByLessonIdUseCase = GetQuestionsByLessonIdUseCase(repository)
+            getQuestionsByLessonIdUseCase = GetQuestionsByLessonIdUseCase(repository),
+            addQuestionUseCase = AddQuestionUseCase(repository),
+            addLessonUseCase = AddLessonUseCase(repository)
         )
     }
 }

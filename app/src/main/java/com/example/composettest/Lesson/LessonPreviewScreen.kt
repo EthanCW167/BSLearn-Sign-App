@@ -1,5 +1,6 @@
 package com.example.composettest.Lesson
 
+import android.graphics.drawable.Drawable
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -7,6 +8,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.filled.Preview
 import androidx.compose.material.icons.filled.QuestionMark
 import androidx.compose.material.icons.filled.WavingHand
@@ -16,11 +18,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.composettest.R
 import com.example.composettest.Screen
 
 @Composable
@@ -35,36 +40,57 @@ fun LessonPreviewScreen(
     val signs = viewModel.signs
     val questions = viewModel.questions
     val isCompleted = viewModel.isCompleted
+    val previewFilePath = viewModel.previewFilePath
+    val description = viewModel.description
+    //val context = LocalContext.current
 
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = Color(72,69,221)
     ) {}
 
+    println(R.drawable.hello_sign)
     Column(Modifier
         .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Image(imageVector = Icons.Default.Preview, contentDescription = "Lesson Image Preview", modifier = Modifier
-            .height(300.dp)
-            .width(350.dp)
-            .padding(top = 50.dp)
-            .padding(10.dp)
-            .clip(shape = RoundedCornerShape(20.dp))
-            .background(Color.White))
-        Spacer(modifier = Modifier.size(20.dp))
+        //Image(painter = painterResource(id = ("R.drawable.${viewModel.previewFilePath}").toInt()), contentDescription = "Lesson Image Preview", modifier = Modifier
+        //    .height(300.dp)
+        //    .width(350.dp)
+        //    .padding(top = 50.dp)
+        //    .padding(10.dp)
+        //    .clip(shape = RoundedCornerShape(20.dp))
+        //    .background(Color.White))
+        //Spacer(modifier = Modifier.size(20.dp))
 
+        //ImagePreview(viewModel = viewModel)
         if (lessonNum != null) {
             if (title != null) {
                 if (signs != null) {
                     if (questions != null) {
-                        PreviewDescription(id = id, name = title, lessonNum = lessonNum, signs = signs, questions = questions, description = "Ipsum Lorum", navController = navController, viewModel = viewModel)
+                        if (previewFilePath != null){
+                            if (description != null){
+                                ImagePreview(previewFilePath)
+                                PreviewDescription(id = id, name = title, lessonNum = lessonNum, signs = signs, questions = questions, description = description, navController = navController, viewModel = viewModel)
+                            }
+                        }
                     }
                 }
             }
         }
 
     }
+}
+@Composable
+fun ImagePreview(previewFilePath: Int){
+
+    Image(painter = painterResource(id = previewFilePath), contentDescription = "Lesson Image Preview", modifier = Modifier
+        .height(300.dp)
+        .width(350.dp)
+        .padding(top = 50.dp)
+        .padding(10.dp)
+        .clip(shape = RoundedCornerShape(20.dp))
+        .background(Color.White))
 }
 
 @Composable
@@ -156,12 +182,12 @@ fun PreviewInfoBox(signs: Int, questions: Int){
         Row(horizontalArrangement = Arrangement.Start) {
             Icon(imageVector = Icons.Default.QuestionMark, contentDescription = "Questions")
             Spacer(modifier = Modifier.size(5.dp))
-            Text(text = "10 Questions")
+            Text(text = "$questions Questions")
         }
         Row(horizontalArrangement = Arrangement.Start) {
             Icon(imageVector = Icons.Default.WavingHand, contentDescription = "Signs")
             Spacer(modifier = Modifier.size(5.dp))
-            Text(text = "+8 Signs to learn")
+            Text(text = "+$signs Signs to learn")
         }
 
     }

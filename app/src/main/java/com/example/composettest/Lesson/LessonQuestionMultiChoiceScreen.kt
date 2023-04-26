@@ -49,7 +49,7 @@ fun LessonQuestionMultiChoiceScreen (
     var selected4 by remember { mutableStateOf(false) }
 
     var answer = viewModel.sign
-    var guess: String
+    var guess = ""
 
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -130,7 +130,12 @@ fun LessonQuestionMultiChoiceScreen (
                 Column(modifier = Modifier.fillMaxSize(),
                     verticalArrangement = Arrangement.Bottom,
                     horizontalAlignment = Alignment.CenterHorizontally) {
-                    Button(onClick = {viewModel.nextScreen(orderNum, numQuestion, navController)} ,modifier = Modifier
+                    Button(onClick = {
+
+                        if (answer == guess) {viewModel.updateQuestion(1); viewModel.nextScreen(lessonId, orderNum, numQuestion, navController)}
+                        else {viewModel.updateQuestion(0); viewModel.nextScreen(lessonId, orderNum, numQuestion, navController)}
+
+                                     } ,modifier = Modifier
                         .width(200.dp)
                         .height(70.dp)
                         .padding(15.dp),

@@ -45,4 +45,7 @@ interface LessonDao {
     @Query("SELECT * FROM signData WHERE signId = :signId")
     suspend fun getSignDataBySignId(signId: Int): signData?
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertQuestion(question: Question)
+
 }

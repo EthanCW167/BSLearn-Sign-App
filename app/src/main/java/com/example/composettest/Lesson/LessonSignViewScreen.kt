@@ -79,7 +79,7 @@ fun LessonSignViewScreen(
             Column(modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.Bottom,
                 horizontalAlignment = Alignment.CenterHorizontally) {
-                Button(onClick = {viewModel.nextScreen(orderNum, numQuestion, navController)} ,modifier = Modifier
+                Button(onClick = {viewModel.nextScreen(lessonId, orderNum, numQuestion, navController)} ,modifier = Modifier
                     .width(200.dp)
                     .height(70.dp)
                     .padding(15.dp),
