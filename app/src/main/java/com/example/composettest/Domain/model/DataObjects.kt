@@ -73,20 +73,20 @@ data class QuestionSignData(
 
 
 data class FLesson(
-    val author: Int = 0,
-    val name: String = "",
-    val lessonNum: Int = 0,
-    val signs: Int = 0,
+    val author: Int = 1,
+    var name: String = "Lesson Name",
+    val lessonNum: Int = 1,
+    val signs: Int = 1,
     val questions: Int = 0,
-    val questionsList: List<FQuestion> = emptyList(),
+    val questionsList: List<FQuestion> = listOf<FQuestion>(FQuestion()),
     val previewFilePath: Int = 0,
     val description: String = ""
 )
 
 data class FQuestion(
-    val questionId: Int = 0,
-    val questionType: String = "",
-    val signData: FSignData = FSignData(0,"", 0 , 0),
+    val questionId: Int = 1,
+    val questionType: String = "sign",
+    val signData: FSignData = FSignData(1,"Hello", 2131623936 , 2131165305),
     val isCorrect: Int = 0
 )
 

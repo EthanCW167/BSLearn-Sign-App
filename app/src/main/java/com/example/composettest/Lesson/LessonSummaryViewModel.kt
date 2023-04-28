@@ -52,6 +52,7 @@ class LessonSummaryViewModel @Inject constructor(
             ?.launchIn(viewModelScope)
     }
 
+
     private fun getLesson(lessonId: Int){
         viewModelScope.launch {
             lesson = lessonUseCases.getLessonUseCase(lessonId)

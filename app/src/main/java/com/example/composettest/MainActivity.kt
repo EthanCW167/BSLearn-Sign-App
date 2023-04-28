@@ -8,20 +8,55 @@ import androidx.compose.material.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.compose.rememberNavController
+import com.example.composettest.Domain.model.FLesson
+import com.example.composettest.Domain.model.Lesson
 import com.example.composettest.UserInterface.HomeScreen
 import com.example.composettest.ui.theme.ComposetTestTheme
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.toObject
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    //val lessonsDB = Firebase.firestore.collection("lessons")
+
+    var lessons: MutableList<FLesson> = emptyList<FLesson>().toMutableList()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             Navigation()
+            //retrieveLessons()
 
         }
     }
+
+/*
+    fun retrieveLessons() = CoroutineScope(Dispatchers.IO).launch {
+        val querySnapshot = lessonsDB.get().await()
+
+
+        for (document in querySnapshot.documents){
+            val lesson = document.toObject<FLesson>()
+            if (lesson != null) {
+                lessons.add(lesson)
+            }
+        }
+        println(lessons[0].description)
+        println(lessons.size)
+        println(lessons[0].questionsList[0].signData.sign)
+    }
+
+ */
 }
+
+
 
 /*
 

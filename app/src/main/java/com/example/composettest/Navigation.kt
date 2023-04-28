@@ -14,6 +14,8 @@ import com.example.composettest.Lesson.LessonQuestionMultiChoiceScreen
 import com.example.composettest.Lesson.LessonSignViewScreen
 import com.example.composettest.Lesson.LessonSummaryScreen
 import com.example.composettest.Lesson.LessonTest.LessonTest
+import com.example.composettest.LessonMaker.LessonMakerEditScreen
+import com.example.composettest.LessonMaker.LessonMakerOverview
 import com.example.composettest.UserInterface.Dictionary
 import com.example.composettest.UserInterface.HomeScreen
 
@@ -130,6 +132,28 @@ fun Navigation() {
         ){
             val lessonId = it.arguments?.getInt("lessonId") ?: 0
             LessonSummaryScreen(navController = navController, lessonId = lessonId)
+        }
+        composable(route = Screen.LessonMakerOverview.route + "?userId={userId}",
+            arguments = listOf(
+                navArgument("userId"){
+                    type = NavType.IntType
+                    defaultValue = 1
+                }
+            )
+        ){
+            val userId = it.arguments?.getInt("userId") ?: 1
+            LessonMakerOverview(navController = navController, userId = userId)
+        }
+        composable(route = Screen.LessonMakerEditScreen.route + "?lessonId={lessonId}",
+            arguments = listOf(
+                navArgument("lessonId"){
+                    type = NavType.StringType
+                    defaultValue = ""
+                }
+            )
+        ){
+            val lessonId = it.arguments?.getString("lessonId") ?: ""
+            LessonMakerEditScreen(navController = navController, lessonId = lessonId)
         }
     }
 }

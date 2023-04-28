@@ -270,10 +270,16 @@ fun MainBodyIconButton(
     imageVector: ImageVector,
     description: String,
     name: String,
-    navController: NavController
+    navController: NavController,
 ) {
+
+
     IconButton(onClick = {
-        navController.navigate(Screen.Dictionary.route)
+        if (name == "Lesson Maker"){
+            navController.navigate(Screen.LessonMakerOverview.route + "?userId=${1}")
+        } else {
+            navController.navigate(Screen.Dictionary.route)
+        }
     },
         Modifier
             .padding(15.dp)
