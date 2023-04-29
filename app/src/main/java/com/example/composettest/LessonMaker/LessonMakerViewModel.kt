@@ -34,16 +34,15 @@ class LessonMakerViewModel @Inject constructor(
     private val _lessonIdState = mutableStateOf(LessonIdState())
     val lessonIdState: State<LessonIdState> = _lessonIdState
 
-    var lessonsId: MutableList<String> = emptyList<String>().toMutableList()
-
-
     init {
-        SavedStateHandle.get<Int>("userId")?.let {userId ->
+        SavedStateHandle.get<String>("userId")?.let {userId ->
             getLessons(userId)
         }
     }
 
-    private fun getLessons(author: Int) = CoroutineScope(Dispatchers.IO).launch{
+    fun getLessons(author: String) = CoroutineScope(Dispatchers.IO).launch{
+
+        var lessonsId: MutableList<String> = emptyList<String>().toMutableList()
 
         val querySnapshot = lessonsDB.whereEqualTo("author", author).get().await()
 
@@ -52,6 +51,7 @@ class LessonMakerViewModel @Inject constructor(
         for (document in querySnapshot.documents){
 
             lessonsId.add(document.id)
+            println(document.id)
             val lesson = document.toObject<FLesson>()
             if (lesson != null) {
 
@@ -59,6 +59,7 @@ class LessonMakerViewModel @Inject constructor(
             }
         }
         _lessonIdState.value = lessonIdState.value.copy(lessonIds = lessonsId)
+        println(lessonIdState.value.lessonIds)
         _lessonState.value = lessonState.value.copy(lessons = lessons)
     }
 

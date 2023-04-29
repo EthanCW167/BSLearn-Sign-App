@@ -72,28 +72,36 @@ data class QuestionSignData(
 )
 
 
+
 data class FLesson(
-    val author: Int = 1,
+    val author: String = "-1",
     var name: String = "Lesson Name",
     val lessonNum: Int = 1,
     val signs: Int = 1,
     val questions: Int = 0,
-    val questionsList: List<FQuestion> = listOf<FQuestion>(FQuestion()),
+    var questionsList: List<FQuestion> = listOf(FQuestion()),
     val previewFilePath: Int = 0,
-    val description: String = ""
+    val description: String = "",
+    var sharedUserList: List<String> = emptyList()
 )
 
 data class FQuestion(
-    val questionId: Int = 1,
-    val questionType: String = "sign",
-    val signData: FSignData = FSignData(1,"Hello", 2131623936 , 2131165305),
+    val questionId: Int = 0,
+    var questionType: String = "sign",
+    var signData: FSignData = FSignData(),
     val isCorrect: Int = 0
 )
 
 
 data class FSignData(
-    val signId: Int = 0,
-    val sign: String = "",
-    val filePath: Int = 0,
-    val previewFilePath: Int = 0
+    val signId: Int = 1,
+    val sign: String = "Hello",
+    val filePath: Int = 2131623936,
+    val previewFilePath: Int = 2131165305
+)
+
+data class User(
+    val name: String = "Name",
+    val profilePicturePath: Int = -1,
+    val sharedLesson: MutableList<String> = mutableListOf()
 )

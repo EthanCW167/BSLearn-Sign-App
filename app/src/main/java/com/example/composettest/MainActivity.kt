@@ -1,25 +1,15 @@
 package com.example.composettest
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.navigation.compose.rememberNavController
 import com.example.composettest.Domain.model.FLesson
-import com.example.composettest.Domain.model.Lesson
-import com.example.composettest.UserInterface.HomeScreen
-import com.example.composettest.ui.theme.ComposetTestTheme
 import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
+import android.provider.Settings
+import com.example.composettest.Domain.model.User
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -30,10 +20,23 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
+        var userDB = Firebase.firestore.collection("users")
+        var sharedPreferences = getSharedPreferences("prefs", MODE_PRIVATE)
+        var firstStart  = sharedPreferences.getBoolean("firstStart", true)
+
+        if (firstStart){
+            var deviceId = Settings.Secure.getString(this.contentResolver, Settings.Secure.ANDROID_ID).toString()
+            userDB.document(deviceId).set(User())
+            sharedPreferences.edit().putBoolean("firstStart", false).apply();
+
+        }
+
+
+
         setContent {
             Navigation()
-            //retrieveLessons()
-
         }
     }
 

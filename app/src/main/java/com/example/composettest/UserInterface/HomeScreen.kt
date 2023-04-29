@@ -1,5 +1,6 @@
 package com.example.composettest.UserInterface
 
+import android.provider.Settings
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -273,10 +274,11 @@ fun MainBodyIconButton(
     navController: NavController,
 ) {
 
+    var deviceId = Settings.Secure.getString(LocalContext.current.contentResolver, Settings.Secure.ANDROID_ID).toString()
 
     IconButton(onClick = {
         if (name == "Lesson Maker"){
-            navController.navigate(Screen.LessonMakerOverview.route + "?userId=${1}")
+            navController.navigate(Screen.LessonMakerOverview.route + "?userId=${deviceId}")
         } else {
             navController.navigate(Screen.Dictionary.route)
         }

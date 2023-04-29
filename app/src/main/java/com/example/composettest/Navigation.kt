@@ -3,7 +3,6 @@ package com.example.composettest
 
 import SignView
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavArgument
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -14,8 +13,10 @@ import com.example.composettest.Lesson.LessonQuestionMultiChoiceScreen
 import com.example.composettest.Lesson.LessonSignViewScreen
 import com.example.composettest.Lesson.LessonSummaryScreen
 import com.example.composettest.Lesson.LessonTest.LessonTest
+import com.example.composettest.LessonMaker.LessonMakerEditQuestionsScreen
 import com.example.composettest.LessonMaker.LessonMakerEditScreen
 import com.example.composettest.LessonMaker.LessonMakerOverview
+import com.example.composettest.LessonMaker.LessonShareScreen
 import com.example.composettest.UserInterface.Dictionary
 import com.example.composettest.UserInterface.HomeScreen
 
@@ -136,24 +137,68 @@ fun Navigation() {
         composable(route = Screen.LessonMakerOverview.route + "?userId={userId}",
             arguments = listOf(
                 navArgument("userId"){
-                    type = NavType.IntType
-                    defaultValue = 1
+                    type = NavType.StringType
+                    defaultValue = "-1"
                 }
             )
         ){
-            val userId = it.arguments?.getInt("userId") ?: 1
+            val userId = it.arguments?.getString("userId") ?: "-1"
             LessonMakerOverview(navController = navController, userId = userId)
         }
-        composable(route = Screen.LessonMakerEditScreen.route + "?lessonId={lessonId}",
+        composable(route = Screen.LessonMakerEditScreen.route + "?lessonId={lessonId}&questionIndex={questionIndex}&userId={userId}",
             arguments = listOf(
                 navArgument("lessonId"){
                     type = NavType.StringType
-                    defaultValue = ""
+                    defaultValue = "1"
+                },
+                navArgument("questionIndex"){
+                    type = NavType.IntType
+                    defaultValue = -1
+                },
+                navArgument("userId"){
+                    type = NavType.StringType
+                    defaultValue = "-1"
                 }
             )
         ){
-            val lessonId = it.arguments?.getString("lessonId") ?: ""
-            LessonMakerEditScreen(navController = navController, lessonId = lessonId)
+            val lessonId = it.arguments?.getString("lessonId") ?: "1"
+            val questionIndex = it.arguments?.getInt("questionIndex") ?: -1
+            val userId = it.arguments?.getString("userId") ?: "-1"
+            LessonMakerEditScreen(navController = navController, lessonId = lessonId, userId = userId)
+        }
+        composable(route = Screen.LessonMakerEditQuestionScreen.route + "?lessonId={lessonId}&questionIndex={questionIndex}&userId={userId}",
+            arguments = listOf(
+                navArgument("lessonId"){
+                    type = NavType.StringType
+                    defaultValue = "1"
+                },
+                navArgument("questionIndex"){
+                    type = NavType.IntType
+                    defaultValue = -1
+                },
+                navArgument("userId"){
+                    type = NavType.StringType
+                    defaultValue = "-1"
+                }
+            )
+        ){
+            val lessonId = it.arguments?.getString("lessonId") ?: "1"
+            val questionIndex = it.arguments?.getInt("questionIndex") ?: -1
+            val userId = it.arguments?.getString("userId") ?: "-1"
+            LessonMakerEditQuestionsScreen(navController = navController, lessonId = lessonId, questionIndex = questionIndex, userId = userId)
+        }
+        composable(route = Screen.LessonShareScreen.route + "?lessonId={lessonId}",
+            arguments = listOf(
+                navArgument("lessonId"){
+                    type = NavType.StringType
+                    defaultValue = "1"
+                }
+            )
+
+
+        ){
+            val lessonId = it.arguments?.getString("lessonId") ?: "1"
+            LessonShareScreen(navController = navController, lessonId = lessonId)
         }
     }
 }

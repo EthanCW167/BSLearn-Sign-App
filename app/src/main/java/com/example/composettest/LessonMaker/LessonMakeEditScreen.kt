@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.*
@@ -23,27 +24,23 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.composettest.Domain.model.FQuestion
-import com.example.composettest.Domain.model.Question
 import com.example.composettest.Screen
 
 @Composable
 fun LessonMakerEditScreen(
     navController: NavController,
     viewModel: LessonMakerEditViewModel = hiltViewModel(),
-    lessonId: String
+    lessonId: String,
+    userId: String
 ) {
+
+    println(userId)
 
     val state = viewModel.lessonEditState.value
 
     val lessonTitle = viewModel.lessonName.value
 
-
-
-    //if (viewModel.lessonEdit == null) {
-    //    var lessonEdit = state.lessons[lessonIndex]
-    //} else {
-    //    var lessonEdit = viewModel.lessonEdit
-    //}
+    println(viewModel.lessonEditState.value.lesson.questionsList.size)
 
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -54,7 +51,7 @@ fun LessonMakerEditScreen(
         .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally) {
 
-        topBar(navController)
+        topBarEdit(navController, userId)
         previewLessonButton()
         TitleTextField(
             value = lessonTitle.name,
@@ -69,7 +66,7 @@ fun LessonMakerEditScreen(
             .align(Alignment.CenterHorizontally)
         )
         SignQuestionBox(state = state)
-        QuestionsList(navController = navController, state = state)
+        QuestionsList(navController = navController, state = state, lessonId = lessonId, viewModel, userId)
     }
 }
 
@@ -79,6 +76,7 @@ fun previewLessonButton(){
         .width(300.dp)
         .height(60.dp)
         .padding(5.dp)
+        .shadow(elevation = 5.dp, shape = RoundedCornerShape(20.dp))
         .background(Color(114, 112, 248), shape = RoundedCornerShape(10.dp)),
         contentAlignment = Alignment.Center){
         Text(text = "Preview Lesson", color = Color.White, fontSize = 24.sp)
@@ -135,7 +133,7 @@ fun SignQuestionBox(state: LessonMakerSelectedState){
 }
 
 @Composable
-fun QuestionsList(navController: NavController, state: LessonMakerSelectedState){
+fun QuestionsList(navController: NavController, state: LessonMakerSelectedState, lessonId: String, viewModel: LessonMakerEditViewModel, userId: String){
     Column(modifier = Modifier
         .fillMaxSize()
         .padding(8.dp)
@@ -145,10 +143,14 @@ fun QuestionsList(navController: NavController, state: LessonMakerSelectedState)
 
         LazyColumn(
             state = rememberLazyListState(),
-            modifier = Modifier.fillMaxSize()){
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(300.dp)){
 
             items(state.lesson.questionsList) { question ->
-                QuestionCard(navController = navController, question = question, orderNum = 1)
+                var index = state.lesson.questionsList.indexOf(question)
+                println(index)
+                QuestionCard(navController = navController, question = question, orderNum = 1, questionIndex = index, lessonId = lessonId, userId = userId)
                 Divider(color = Color.Black, modifier = Modifier
                     .padding(horizontal = 15.dp)
                     .padding(bottom = 5.dp)
@@ -158,14 +160,59 @@ fun QuestionsList(navController: NavController, state: LessonMakerSelectedState)
                 )
             }
         }
+        Row(modifier = Modifier
+            .fillMaxWidth()
+            .padding(10.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center) {
+            Box(modifier = Modifier
+                .size(50.dp)
+                .shadow(elevation = 5.dp, shape = CircleShape)
+                .clip(CircleShape)
+                .background(Color(72, 69, 221))
+                .clickable { navController.navigate(Screen.LessonMakerEditQuestionScreen.route + "?lessonId=${lessonId}&questionIndex=${-1}&userId=${userId}") },
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = "new question",
+                    modifier = Modifier
+                        .size(40.dp)
+                )
+            }
+        }
+        Row(Modifier
+            .fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center) {
+            Row(
+                modifier = Modifier
+                    .width(160.dp)
+                    .height(60.dp)
+                    .padding(top = 10.dp)
+                    .shadow(elevation = 5.dp, shape = RoundedCornerShape(20.dp))
+                    .background(Color(72, 69, 221), shape = RoundedCornerShape(20.dp))
+                    .clickable {
+                        viewModel.onEvent(EditLessonEvent.SaveLesson(lessonId = lessonId))
+                        navController.navigateUp()
+                               },
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                Text(text = "Save Edit", fontSize = 22.sp, color = Color.White)
+                Spacer(modifier = Modifier.width(10.dp))
+                Icon(imageVector = Icons.Default.SaveAlt, contentDescription = "Save Icon" )
+            }
+        }
     }
 }
 
 @Composable
-fun QuestionCard(navController: NavController, question: FQuestion, orderNum: Int){
+fun QuestionCard(navController: NavController, question: FQuestion, orderNum: Int, questionIndex: Int, lessonId: String, userId: String){
     Row(modifier = Modifier
         .fillMaxWidth()
-        .padding(5.dp),
+        .padding(5.dp)
+        .clickable { navController.navigate(Screen.LessonMakerEditQuestionScreen.route + "?lessonId=${lessonId}&questionIndex=${questionIndex}&userId=${userId}") },
         verticalAlignment = Alignment.CenterVertically) {
 
         Text(text = "$orderNum", fontSize = 60.sp, modifier = Modifier.padding(horizontal = 20.dp))
@@ -179,5 +226,33 @@ fun QuestionCard(navController: NavController, question: FQuestion, orderNum: In
                 .padding(horizontal = 10.dp)
                 .size(40.dp))
         }
+    }
+}
+
+@Composable
+fun topBarEdit(navController: NavController, userId: String){
+    Column(modifier = Modifier.fillMaxWidth()) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(50.dp),
+            verticalAlignment = Alignment.CenterVertically
+
+        ) {
+
+            Button(onClick = {navController.navigate(Screen.LessonMakerOverview.route + "?userId=${userId}")}) {
+                Text(text = "Back")
+            }
+            Spacer(modifier = Modifier.width(20.dp))
+            Text(text = "Lesson Maker", fontSize = 24.sp)
+        }
+        Divider(color = Color.Black, modifier = Modifier
+            .padding(5.dp)
+            .padding(horizontal = 15.dp)
+            .padding(bottom = 5.dp)
+            .height(1.dp)
+            .fillMaxWidth()
+            .align(Alignment.CenterHorizontally)
+        )
     }
 }

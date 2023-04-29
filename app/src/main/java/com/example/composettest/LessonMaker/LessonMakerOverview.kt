@@ -28,12 +28,17 @@ import com.example.composettest.Screen
 fun LessonMakerOverview(
     navController: NavController,
     viewModel: LessonMakerViewModel = hiltViewModel(),
-    userId: Int
+    userId: String
 ){
+
+    println(userId)
+
+    viewModel.getLessons(userId)
 
     val state = viewModel.lessonState.value
 
     val idState = viewModel.lessonIdState.value
+
 
 
     Surface(
@@ -44,7 +49,7 @@ fun LessonMakerOverview(
 
     Column(Modifier.fillMaxSize()) {
         topBar(navController)
-        MainBody(state = state, navController = navController, idState = idState)
+        MainBody(state = state, navController = navController, idState = idState, userId = userId)
     }
 }
 
@@ -78,7 +83,7 @@ fun topBar(navController: NavController){
 }
 
 @Composable
-fun MainBody(state: LessonMakerState, navController: NavController, idState: LessonIdState){
+fun MainBody(state: LessonMakerState, navController: NavController, idState: LessonIdState, userId: String){
 
     Column(modifier = Modifier
         .fillMaxSize()
@@ -123,7 +128,9 @@ fun MainBody(state: LessonMakerState, navController: NavController, idState: Les
             items(state.lessons) { lesson ->
 
                 val index = state.lessons.indexOf(lesson)
-                LessonCard(lesson, idState.lessonIds[index], navController = navController)
+                println(index)
+                //println(idState.lessonIds[index])
+                LessonCard(lesson, idState.lessonIds[index], navController = navController, userId = userId)
             }
         }
         Row(modifier = Modifier
@@ -133,9 +140,10 @@ fun MainBody(state: LessonMakerState, navController: NavController, idState: Les
             horizontalArrangement = Arrangement.Center) {
             Box(modifier = Modifier
                 .size(50.dp)
+                .shadow(elevation = 5.dp, shape = CircleShape)
                 .clip(CircleShape)
                 .background(Color(72,69,221))
-                .clickable{navController.navigate(Screen.LessonMakerEditScreen.route + "?lessonId=${1}")},
+                .clickable{navController.navigate(Screen.LessonMakerEditScreen.route + "?lessonId=${1}&userId=${userId}")},
                 contentAlignment = Alignment.Center
                 ) {
                 Icon(
@@ -151,22 +159,21 @@ fun MainBody(state: LessonMakerState, navController: NavController, idState: Les
 }
 
 @Composable
-fun LessonCard(lesson: FLesson, index: String, navController: NavController){
+fun LessonCard(lesson: FLesson, index: String, navController: NavController, userId: String){
     Row(modifier = Modifier
         .fillMaxWidth()
         .padding(2.dp)
         .shadow(elevation = 5.dp, shape = RoundedCornerShape(20.dp))
         .height(80.dp)
         .background(Color(238, 238, 255), shape = RoundedCornerShape(20.dp))
-        .clickable{navController.navigate(Screen.LessonMakerEditScreen.route + "?lessonId=${index}")},
+        .clickable{navController.navigate(Screen.LessonMakerEditScreen.route + "?lessonId=${index}&userId=${userId}")},
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
         Column(Modifier.padding()) {
             Text(text = lesson.name, modifier = Modifier
                 .padding(bottom = 10.dp), fontSize = 18.sp)
-            Row(modifier = Modifier.padding(0.dp),
-                horizontalArrangement = Arrangement.SpaceEvenly) {
+            Row(horizontalArrangement = Arrangement.SpaceEvenly) {
                 Row() {
                     Icon(imageVector = Icons.Default.QuestionMark, contentDescription = "Question")
                     Text(text = "${lesson.questions} Questions", modifier = Modifier.padding(horizontal = 5.dp))
@@ -181,7 +188,7 @@ fun LessonCard(lesson: FLesson, index: String, navController: NavController){
         }
         Row() {
             Icon(imageVector = Icons.Default.Edit, contentDescription = "Edit", modifier = Modifier.padding(5.dp))
-            Icon(imageVector = Icons.Default.Share, contentDescription = "Share", modifier = Modifier.padding(5.dp))
+            Icon(imageVector = Icons.Default.Share, contentDescription = "Share", modifier = Modifier.padding(5.dp).clickable { navController.navigate(route = Screen.LessonShareScreen.route + "?lessonId=${index}") })
         }
     }
 }
