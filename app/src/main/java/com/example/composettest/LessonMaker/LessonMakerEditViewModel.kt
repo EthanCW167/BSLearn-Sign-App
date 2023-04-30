@@ -40,7 +40,7 @@ class LessonMakerEditViewModel @Inject constructor(
     private val _signDataList = mutableStateOf(SignDataState())
     val signDataList: State<SignDataState> = _signDataList
 
-    var signData: FSignData = FSignData()
+    //var signData: FSignData = FSignData()
 
     private val _questionEdit = mutableStateOf(QuestionEditState())
     var questionEdit: MutableState<QuestionEditState> = _questionEdit

@@ -27,6 +27,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.composettest.Domain.model.Question
 import com.example.composettest.Domain.model.signData
+import com.example.composettest.Screen
 
 @Composable
 fun LessonSummaryScreen(
@@ -131,7 +132,10 @@ fun LessonSummaryScreen(
                 modifier = Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Button(onClick = { viewModel.lesson?.let { viewModel.insertLesson(it) } },
+                Button(onClick = {
+                    viewModel.lesson?.let { viewModel.insertLesson(it) }
+                    navController.navigate(Screen.HomeScreen.route)
+                                 },
                     modifier = Modifier
                         .width(200.dp)
                         .height(60.dp),

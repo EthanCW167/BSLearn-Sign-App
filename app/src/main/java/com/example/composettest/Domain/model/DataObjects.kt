@@ -98,7 +98,17 @@ data class FSignData(
     val sign: String = "Hello",
     val filePath: Int = 2131623936,
     val previewFilePath: Int = 2131165305
-)
+) {
+    fun doesMatchSearchQuery(query: String): Boolean {
+        val matchingCombinations = listOf(
+            "$sign",
+        )
+
+        return matchingCombinations.any {
+            it.contains(query, ignoreCase = true)
+        }
+    }
+}
 
 data class User(
     val name: String = "Name",
