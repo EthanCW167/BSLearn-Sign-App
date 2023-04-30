@@ -89,7 +89,7 @@ class LessonShareViewModel @Inject constructor(
                 } else {
                     if (event.userId != "") {
                         viewModelScope.launch {
-                            if (usersDb.document(event.userId).get().isSuccessful) {
+                            if (usersDb.document(event.userId).get().await().exists()) {
                                 usersDb.document(event.userId).get()
                                     .addOnSuccessListener { document ->
                                         if (document != null) {

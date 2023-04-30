@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -68,7 +69,8 @@ fun LessonShareScreen(
             )
             LazyColumn(modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 16.dp)){
+                .padding(top = 20.dp)
+                .padding(horizontal = 25.dp)){
                 println("here")
                 println(usersState.Users.size)
                 items(usersState.Users) { user ->
@@ -138,16 +140,24 @@ fun searchUser(viewModel: LessonShareViewModel){
             .border(border = BorderStroke(1.dp, color = Color.LightGray))
             .clickable {
                 var alreadyShared = viewModel.onEvent(ShareLessonEvent.AddUser(searchText))
-                if (alreadyShared == "user added"){
-                    Toast.makeText(context, "Lesson Already Shared With User", Toast.LENGTH_SHORT).show()
+                if (alreadyShared == "user added") {
+                    Toast
+                        .makeText(context, "Lesson Already Shared With User", Toast.LENGTH_SHORT)
+                        .show()
                 } else if (alreadyShared == "not found") {
-                    Toast.makeText(context, "User cannot be found", Toast.LENGTH_SHORT).show()
+                    Toast
+                        .makeText(context, "User cannot be found", Toast.LENGTH_SHORT)
+                        .show()
                 } else if (alreadyShared == "empty search") {
-                    Toast.makeText(context, "Search Field Empty", Toast.LENGTH_SHORT).show()
+                    Toast
+                        .makeText(context, "Search Field Empty", Toast.LENGTH_SHORT)
+                        .show()
                 } else {
-                    Toast.makeText(context, "Lesson Shared", Toast.LENGTH_SHORT).show()
+                    Toast
+                        .makeText(context, "Lesson Shared", Toast.LENGTH_SHORT)
+                        .show()
                 }
-                       },
+            },
             contentAlignment = Alignment.Center){
             Icon(imageVector = Icons.Default.Search, contentDescription = "Search Button")
         }
@@ -159,13 +169,34 @@ fun searchUser(viewModel: LessonShareViewModel){
 fun UserCard(user: User, userId: String){
     Row(modifier = Modifier
         .fillMaxWidth()
-        .height(50.dp)
-        .padding(bottom = 8.dp)
+        .height(75.dp)
+        .padding(bottom = 15.dp)
         .shadow(elevation = 5.dp, shape = RoundedCornerShape(20.dp))
-        .background(Color(238, 238, 255), shape = RoundedCornerShape(20.dp))) {
+        .background(Color(238, 238, 255), shape = RoundedCornerShape(20.dp)),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically) {
 
-        Text(text = user.name, textAlign = TextAlign.Start, modifier = Modifier.padding(horizontal = 10.dp))
-        Text(text = userId, textAlign = TextAlign.End, modifier = Modifier.padding(horizontal = 10.dp))
-    }
+
+        Row(modifier = Modifier.padding(horizontal = 8.dp), verticalAlignment = Alignment.CenterVertically) {
+
+            Icon(imageVector = Icons.Default.Person, contentDescription = "Profile Icon", Modifier.size(30.dp))
+            Text(
+                text = user.name,
+                textAlign = TextAlign.Start,
+                fontSize = 17.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(horizontal = 10.dp)
+            )
+        }
+
+            Text(
+                text = "Tag: ${userId}",
+                textAlign = TextAlign.End,
+                fontSize = 17.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(horizontal = 10.dp)
+            )
+
 
     }
+}

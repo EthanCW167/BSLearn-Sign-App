@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -167,7 +168,8 @@ fun LessonCard(lesson: FLesson, index: String, navController: NavController, use
     ) {
         Column(Modifier.padding()) {
             Text(text = lesson.name, modifier = Modifier
-                .padding(bottom = 10.dp), fontSize = 18.sp)
+                .padding(bottom = 10.dp), fontSize = 18.sp, fontWeight = FontWeight.Bold
+            )
             Row(horizontalArrangement = Arrangement.SpaceEvenly) {
                 Row() {
                     Icon(imageVector = Icons.Default.QuestionMark, contentDescription = "Question")
