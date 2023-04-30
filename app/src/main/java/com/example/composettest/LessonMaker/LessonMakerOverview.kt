@@ -30,9 +30,6 @@ fun LessonMakerOverview(
     viewModel: LessonMakerViewModel = hiltViewModel(),
     userId: String
 ){
-
-    println(userId)
-
     viewModel.getLessons(userId)
 
     val state = viewModel.lessonState.value
@@ -128,8 +125,6 @@ fun MainBody(state: LessonMakerState, navController: NavController, idState: Les
             items(state.lessons) { lesson ->
 
                 val index = state.lessons.indexOf(lesson)
-                println(index)
-                //println(idState.lessonIds[index])
                 LessonCard(lesson, idState.lessonIds[index], navController = navController, userId = userId)
             }
         }

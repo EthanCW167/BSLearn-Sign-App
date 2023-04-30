@@ -16,6 +16,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import java.io.IOException
 import javax.inject.Inject
 
 
@@ -33,6 +34,9 @@ class LessonShareViewModel @Inject constructor(
 
     private val _usersState = mutableStateOf(SharedUsersState())
     val usersState: State<SharedUsersState> = _usersState
+
+    private val _usersIdState = mutableStateOf(UserIdListState())
+    val usersIdState: State<UserIdListState> = _usersIdState
 
     var lessonIdGlobal: String = ""
 
@@ -59,42 +63,70 @@ class LessonShareViewModel @Inject constructor(
     fun getUsers(lessonId: String) = CoroutineScope(Dispatchers.IO).launch {
 
         var users = mutableListOf<User>()
+        var userIdList = mutableListOf<String>()
 
         for (userId in lessonState.value.lesson.sharedUserList)
             usersDb.document(userId).get().addOnSuccessListener { user ->
                 if (user != null){
                     users.add(user.toObject<User>()!!)
+                    userIdList.add(user.id)
+
+                    _usersState.value = usersState.value.copy(users)
+                    _usersIdState.value = usersIdState.value.copy(userIdList)
                 }
             }
-        _usersState.value = usersState.value.copy(users)
     }
 
-    fun onEvent(event: ShareLessonEvent){
+    fun onEvent(event: ShareLessonEvent): String{
         when(event){
             is ShareLessonEvent.AddUser -> {
-                viewModelScope.launch {
-                usersDb.document(event.userId).get().addOnSuccessListener { document ->
-                    if (document != null) {
-
-                        var user: User = document.toObject<User>()!!
-                        user.sharedLesson.add(lessonIdGlobal)
-
-                        var sharedUserList: MutableList<String> = lessonState.value.lesson.sharedUserList.toMutableList()
-                        sharedUserList.add(event.userId)
-
-                        var lesson: FLesson = lessonState.value.lesson
-                        lesson.sharedUserList = sharedUserList
-
-                        _lessonState.value = lessonState.value.copy(lesson)
-
+                var exception = ""
+                var string = event.userId
+                println(string)
+                println(event.userId)
+                if (usersIdState.value.userIdList.contains(event.userId)) {
+                    return "user added"
+                } else {
+                    if (event.userId != "") {
                         viewModelScope.launch {
-                            usersDb.document(event.userId).set(user).await()
-                            lessonsDB.document(lessonIdGlobal).set(lessonState.value.lesson)
+                            if (usersDb.document(event.userId).get().isSuccessful) {
+                                usersDb.document(event.userId).get()
+                                    .addOnSuccessListener { document ->
+                                        if (document != null) {
+
+                                            var user: User = document.toObject<User>()!!
+                                            user.sharedLesson.add(lessonIdGlobal)
+
+                                            var sharedUserList: MutableList<String> =
+                                                lessonState.value.lesson.sharedUserList.toMutableList()
+                                            sharedUserList.add(event.userId)
+
+                                            var lesson: FLesson = lessonState.value.lesson
+                                            lesson.sharedUserList = sharedUserList
+
+                                            _lessonState.value = lessonState.value.copy(lesson)
+
+                                            viewModelScope.launch {
+                                                usersDb.document(event.userId).set(user).await()
+                                                lessonsDB.document(lessonIdGlobal)
+                                                    .set(lessonState.value.lesson)
+                                            }
+                                        }
+                                    }
+                            } else {
+                                exception = "not found"
+                            }
                         }
+                    } else {
+                        return "empty search"
+                    }
+                    getUsers(lessonIdGlobal)
+                    if (exception == "not found"){
+                        return exception
+                    } else {
+                        return "user shared"
                     }
                 }
-                }
-                getUsers(lessonIdGlobal)
             }
         }
     }

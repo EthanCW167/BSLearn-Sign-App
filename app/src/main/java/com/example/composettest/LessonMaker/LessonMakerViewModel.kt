@@ -51,7 +51,6 @@ class LessonMakerViewModel @Inject constructor(
         for (document in querySnapshot.documents){
 
             lessonsId.add(document.id)
-            println(document.id)
             val lesson = document.toObject<FLesson>()
             if (lesson != null) {
 
