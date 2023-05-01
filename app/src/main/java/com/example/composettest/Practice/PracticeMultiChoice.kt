@@ -64,14 +64,8 @@ fun PracticeMultiChoice(
         .fillMaxSize()
         .padding(8.dp)) {
 
-        Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()){
-            Text(text = "Practice", fontSize = 24.sp, textAlign = TextAlign.Center, modifier = Modifier.padding(top = 8.dp))
-        }
-        Divider(color = Color.Black, modifier = Modifier
-            .padding(16.dp)
-            .height(1.dp)
-            .fillMaxWidth()
-        )
+        topBarPractice(navController = navController)
+
         viewModel.lesson.value.lesson.questionsList[questionIndex].signData.filePath?.let { VideoDisplay(filepath = it) }
 
         Column(

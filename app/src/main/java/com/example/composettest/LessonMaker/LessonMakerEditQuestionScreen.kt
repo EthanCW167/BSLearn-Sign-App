@@ -56,7 +56,7 @@ fun LessonMakerEditQuestionsScreen(
         .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally) {
         
-        topBar(navController = navController)
+        topBarQuestionEdit(navController = navController)
   
         Image(painter = painterResource(id = questionEdit.questionEdit.signData.previewFilePath),
             contentDescription = "Sign Preview",
@@ -205,6 +205,44 @@ fun questionSetter(questionEdit: QuestionEditState, navController: NavController
         }
     }
 
+@Composable
+fun topBarQuestionEdit(navController: NavController){
+    Column(modifier = Modifier.fillMaxWidth()) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp)
+                .height(50.dp),
+            verticalAlignment = Alignment.CenterVertically
+
+        ) {
+            Box(contentAlignment = Alignment.Center) {
+                Row(modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp), horizontalArrangement = Arrangement.Start) {
+
+                    Button(
+                        onClick = { navController.navigateUp() },
+                        shape = RoundedCornerShape(60),
+                        modifier = Modifier.width(100.dp).shadow(elevation = 5.dp, shape = RoundedCornerShape(60)),
+                        colors = ButtonDefaults.buttonColors(Color.White)
+                    ) {
+                        Text(text = "Back" , color = Color.Black, fontSize = 16.sp)
+                    }
+                }
+                Text(text = "Lesson Maker", fontSize = 24.sp)
+            }
+        }
+        Divider(color = Color.Black, modifier = Modifier
+            .padding(5.dp)
+            .padding(horizontal = 15.dp)
+            .padding(bottom = 5.dp)
+            .height(1.dp)
+            .fillMaxWidth()
+            .align(Alignment.CenterHorizontally)
+        )
+    }
+}
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable

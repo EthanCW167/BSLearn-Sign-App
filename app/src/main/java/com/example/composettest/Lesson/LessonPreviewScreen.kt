@@ -1,9 +1,7 @@
 package com.example.composettest.Lesson
 
 import android.graphics.drawable.Drawable
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -50,21 +48,27 @@ fun LessonPreviewScreen(
         color = Color(72,69,221)
     ) {}
 
-    println(R.drawable.hello_sign)
+
     Column(Modifier
         .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        //Image(painter = painterResource(id = ("R.drawable.${viewModel.previewFilePath}").toInt()), contentDescription = "Lesson Image Preview", modifier = Modifier
-        //    .height(300.dp)
-        //    .width(350.dp)
-        //    .padding(top = 50.dp)
-        //    .padding(10.dp)
-        //    .clip(shape = RoundedCornerShape(20.dp))
-        //    .background(Color.White))
-        //Spacer(modifier = Modifier.size(20.dp))
+        Row(Modifier.fillMaxWidth().padding(horizontal = 8.dp), horizontalArrangement = Arrangement.Start) {
 
-        //ImagePreview(viewModel = viewModel)
+
+            Button(
+                onClick = { navController.navigateUp() },
+                shape = RoundedCornerShape(60),
+                modifier = Modifier
+                    .width(100.dp)
+                    .padding(top = 8.dp)
+                    .shadow(elevation = 5.dp, shape = RoundedCornerShape(60)),
+                colors = ButtonDefaults.buttonColors(Color.White)
+            ) {
+                Text(text = "Back", color = Color.Black, fontSize = 16.sp)
+            }
+        }
+
         if (lessonNum != null) {
             if (title != null) {
                 if (signs != null) {
@@ -123,7 +127,7 @@ fun PreviewDescription(id: Int, name: String, lessonNum: Int, signs: Int, questi
         Column(modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Bottom,
             horizontalAlignment = Alignment.CenterHorizontally) {
-            Button(onClick = {navController.navigate(Screen.LessonSignViewScreen.route + "?lessonId=${id}&orderNum=${1}&numQuestion=${viewModel.signs!! + viewModel.questions!!}")} ,modifier = Modifier
+            Button(onClick = {navController.navigate(Screen.LessonSignViewScreen.route + "?lessonId=${id}&orderNum=${1}&numQuestion=${viewModel.signs!! + viewModel.questions!!}&lessonTitle=${name}")} ,modifier = Modifier
                 .width(200.dp)
                 .height(70.dp)
                 .padding(15.dp),

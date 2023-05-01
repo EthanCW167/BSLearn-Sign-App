@@ -69,7 +69,7 @@ fun Navigation() {
             val lessonId = it.arguments?.getInt("id") ?: 0
             LessonPreviewScreen(navController = navController, id = lessonId)
         }
-        composable(route = Screen.LessonSignViewScreen.route + "?orderNum={orderNum}&lessonId={lessonId}&numQuestions={numQuestions}",
+        composable(route = Screen.LessonSignViewScreen.route + "?orderNum={orderNum}&lessonId={lessonId}&numQuestions={numQuestions}&lessonTitle={lessonTitle}",
         arguments = listOf(
             navArgument("orderNum"){
                 type = NavType.IntType
@@ -82,13 +82,18 @@ fun Navigation() {
             navArgument("numQuestion"){
                 type = NavType.IntType
                 defaultValue = 1
+            },
+            navArgument("lessonTitle"){
+                type = NavType.StringType
+                defaultValue = "Lesson"
             }
 
         )) {
             val orderNum = it.arguments?.getInt("orderNum") ?: 1
             val lessonId = it.arguments?.getInt("lessonId") ?: 0
             val numQuestion =  it.arguments?.getInt("numQuestion") ?: 1
-            LessonSignViewScreen(navController = navController, orderNum = orderNum, lessonId = lessonId, numQuestion = numQuestion)
+            val lessonTitle = it.arguments?.getString("lessonTitle") ?: "Lesson"
+            LessonSignViewScreen(navController = navController, orderNum = orderNum, lessonId = lessonId, numQuestion = numQuestion, lessonTitle = lessonTitle)
         }
         composable(route = Screen.LessonTest.route + "?lessonId={lessonId}&orderNum={orderNum}",
             arguments = listOf(
@@ -106,7 +111,7 @@ fun Navigation() {
             val orderNum = it.arguments?.getInt("orderNum") ?: 1
             LessonTest(navController = navController, questionId = lessonId, orderNum = orderNum)
         }
-        composable(route = Screen.LessonQuestionMultiChoiceScreen.route + "?lessonId={lessonId}&orderNum={orderNum}&numQuestions={numQuestions}",
+        composable(route = Screen.LessonQuestionMultiChoiceScreen.route + "?lessonId={lessonId}&orderNum={orderNum}&numQuestions={numQuestions}&lessonTitle={lessonTitle}",
             arguments = listOf(
                 navArgument("lessonId"){
                     type = NavType.IntType
@@ -119,24 +124,34 @@ fun Navigation() {
                 navArgument("numQuestion"){
                     type = NavType.IntType
                     defaultValue = 1
+                },
+                navArgument("lessonTitle"){
+                    type = NavType.StringType
+                    defaultValue = "Lesson"
                 }
             )
         ){
             val lessonId = it.arguments?.getInt("lessonId") ?: 0
             val orderNum = it.arguments?.getInt("orderNum") ?: 1
             val numQuestion =  it.arguments?.getInt("numQuestion") ?: 1
-            LessonQuestionMultiChoiceScreen(navController = navController, orderNum = orderNum, lessonId = lessonId, numQuestion = numQuestion)
+            val lessonTitle = it.arguments?.getString("lessonTitle") ?: "Lesson"
+            LessonQuestionMultiChoiceScreen(navController = navController, orderNum = orderNum, lessonId = lessonId, numQuestion = numQuestion, lessonTitle = lessonTitle)
         }
-        composable(route = Screen.LessonSummaryScreen.route + "?lessonId={lessonId}",
+        composable(route = Screen.LessonSummaryScreen.route + "?lessonId={lessonId}&lessonTitle={lessonTitle}",
             arguments = listOf(
                 navArgument("lessonId"){
                     type = NavType.IntType
                     defaultValue = 0
+                },
+                navArgument("lessonTitle"){
+                    type = NavType.StringType
+                    defaultValue = "Lesson"
                 }
             )
         ){
             val lessonId = it.arguments?.getInt("lessonId") ?: 0
-            LessonSummaryScreen(navController = navController, lessonId = lessonId)
+            val lessonTitle = it.arguments?.getString("lessonTitle") ?: "Lesson"
+            LessonSummaryScreen(navController = navController, lessonId = lessonId, lessonTitle = lessonTitle)
         }
         composable(route = Screen.LessonMakerOverview.route + "?userId={userId}",
             arguments = listOf(

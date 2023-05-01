@@ -41,7 +41,8 @@ fun LessonQuestionMultiChoiceScreen (
     signViewModel: SignChoiceViewModel = hiltViewModel(remember { backStackEntry }),
     orderNum: Int,
     lessonId: Int,
-    numQuestion: Int
+    numQuestion: Int,
+    lessonTitle: String
 
 ){
 
@@ -64,15 +65,8 @@ fun LessonQuestionMultiChoiceScreen (
         .fillMaxSize()
         .padding(8.dp)) {
 
-        Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()){
-            Text(text = "Lesson Sign View", fontSize = 24.sp, textAlign = TextAlign.Center, modifier = Modifier.padding(top = 8.dp))
-            lessonNumBox(lessonNum = 1)
-        }
-        Divider(color = Color.Black, modifier = Modifier
-            .padding(16.dp)
-            .height(1.dp)
-            .fillMaxWidth()
-        )
+        topBarLesson(navController = navController, lessonTitle = lessonTitle)
+
         viewModel.filePath?.let { VideoDisplay(filepath = it) }
 
         Column(
@@ -143,8 +137,8 @@ fun LessonQuestionMultiChoiceScreen (
                     horizontalAlignment = Alignment.CenterHorizontally) {
                     Button(onClick = {
 
-                        if (answer == guess.value) {viewModel.updateQuestion(1); viewModel.nextScreen(lessonId, orderNum, numQuestion, navController)}
-                        else {viewModel.updateQuestion(0); viewModel.nextScreen(lessonId, orderNum, numQuestion, navController)}
+                        if (answer == guess.value) {viewModel.updateQuestion(1); viewModel.nextScreen(lessonId, orderNum, numQuestion, navController, lessonTitle)}
+                        else {viewModel.updateQuestion(0); viewModel.nextScreen(lessonId, orderNum, numQuestion, navController, lessonTitle)}
 
                                      } ,modifier = Modifier
                         .width(200.dp)
@@ -258,6 +252,46 @@ private fun getSimpleExoPlayer(context: Context, filepath: Int): ExoPlayer {
     }
 }
 
+@Composable
+fun topBarLesson(navController: NavController, lessonTitle: String){
+    Column(modifier = Modifier.fillMaxWidth()) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp)
+                .height(50.dp),
+            verticalAlignment = Alignment.CenterVertically
+
+        ) {
+            Box(contentAlignment = Alignment.Center) {
+                Row(modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp), horizontalArrangement = Arrangement.Start) {
+
+                    Button(
+                        onClick = { navController.navigate(Screen.HomeScreen.route) },
+                        shape = RoundedCornerShape(60),
+                        modifier = Modifier
+                            .width(100.dp)
+                            .shadow(elevation = 5.dp, shape = RoundedCornerShape(60)),
+                        colors = ButtonDefaults.buttonColors(Color.White)
+                    ) {
+                        Text(text = "Back" , color = Color.Black, fontSize = 16.sp)
+                    }
+                }
+                Text(text = lessonTitle, fontSize = 24.sp)
+            }
+        }
+        Divider(color = Color.Black, modifier = Modifier
+            .padding(5.dp)
+            .padding(horizontal = 15.dp)
+            .padding(bottom = 5.dp)
+            .height(1.dp)
+            .fillMaxWidth()
+            .align(Alignment.CenterHorizontally)
+        )
+    }
+}
 
 
 /*

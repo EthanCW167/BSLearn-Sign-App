@@ -166,19 +166,19 @@ class LessonQuestionViewModel @Inject constructor(
         println("completed")
     }
 
-    fun nextScreen(lessonId: Int, orderNum: Int, numQuestion: Int, navController: NavController) {
+    fun nextScreen(lessonId: Int, orderNum: Int, numQuestion: Int, navController: NavController, lessonTitle: String) {
 
         if (orderNum <= numQuestion) {
             println(nextQType)
 
             if (nextQType == "multiple_choice") {
-                navController.navigate(Screen.LessonQuestionMultiChoiceScreen.route + "?lessonId=${getLessonId}&orderNum=${nextQOrderNum}&numQuestion=${numQuestion}")
+                navController.navigate(Screen.LessonQuestionMultiChoiceScreen.route + "?lessonId=${getLessonId}&orderNum=${nextQOrderNum}&numQuestion=${numQuestion}&lessonTitle=${lessonTitle}")
             } else if (nextQType == "sign") {
-                navController.navigate(Screen.LessonSignViewScreen.route + "?lessonId=${getLessonId}&orderNum=${nextQOrderNum}&numQuestion=${numQuestion}")
+                navController.navigate(Screen.LessonSignViewScreen.route + "?lessonId=${getLessonId}&orderNum=${nextQOrderNum}&numQuestion=${numQuestion}&lessonTitle=${lessonTitle}")
             }
         }
         else {
-            navController.navigate(Screen.LessonSummaryScreen.route + "?lessonId=${lessonId}")
+            navController.navigate(Screen.LessonSummaryScreen.route + "?lessonId=${lessonId}&lessonTitle=${lessonTitle}")
         }
     }
 }

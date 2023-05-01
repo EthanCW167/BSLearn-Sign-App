@@ -38,7 +38,7 @@ class LessonViewModel @Inject constructor(
     private var getLessonsJob: Job? = null
 
     init {
-        getLessons(LessonOrder.LessonNum(OrderType.Descending))
+        getLessons(LessonOrder.LessonNum(OrderType.Ascending))
     }
 
     private fun getLessons(lessonOrder: LessonOrder) {

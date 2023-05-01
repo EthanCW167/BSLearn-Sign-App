@@ -235,16 +235,27 @@ fun topBarEdit(navController: NavController, userId: String){
         Row(
             modifier = Modifier
                 .fillMaxWidth()
+                .padding(top = 8.dp)
                 .height(50.dp),
             verticalAlignment = Alignment.CenterVertically
 
         ) {
+            Box(contentAlignment = Alignment.Center) {
+                Row(modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp), horizontalArrangement = Arrangement.Start) {
 
-            Button(onClick = {navController.navigate(Screen.LessonMakerOverview.route + "?userId=${userId}")}) {
-                Text(text = "Back")
+                    Button(
+                        onClick = { navController.navigate(Screen.LessonMakerOverview.route + "?userId=${userId}") },
+                        shape = RoundedCornerShape(60),
+                        modifier = Modifier.width(100.dp).shadow(elevation = 5.dp, shape = RoundedCornerShape(60)),
+                        colors = ButtonDefaults.buttonColors(Color.White)
+                    ) {
+                        Text(text = "Back" , color = Color.Black, fontSize = 16.sp)
+                    }
+                }
+                Text(text = "Lesson Maker", fontSize = 24.sp)
             }
-            Spacer(modifier = Modifier.width(20.dp))
-            Text(text = "Lesson Maker", fontSize = 24.sp)
         }
         Divider(color = Color.Black, modifier = Modifier
             .padding(5.dp)

@@ -58,16 +58,27 @@ fun topBar(navController: NavController){
         Row(
             modifier = Modifier
                 .fillMaxWidth()
+                .padding(top = 8.dp)
                 .height(50.dp),
             verticalAlignment = Alignment.CenterVertically
 
         ) {
+            Box(contentAlignment = Alignment.Center) {
+                Row(modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp), horizontalArrangement = Arrangement.Start) {
 
-            Button(onClick = {navController.navigateUp()}) {
-                Text(text = "Back")
+                    Button(
+                        onClick = { navController.navigate(Screen.HomeScreen.route) },
+                        shape = RoundedCornerShape(60),
+                        modifier = Modifier.width(100.dp).shadow(elevation = 5.dp, shape = RoundedCornerShape(60)),
+                        colors = ButtonDefaults.buttonColors(Color.White)
+                    ) {
+                        Text(text = "Back" , color = Color.Black, fontSize = 16.sp)
+                    }
+                }
+                Text(text = "Lesson Maker", fontSize = 24.sp)
             }
-            Spacer(modifier = Modifier.width(20.dp))
-            Text(text = "Lesson Maker", fontSize = 24.sp)
         }
         Divider(color = Color.Black, modifier = Modifier
             .padding(5.dp)
@@ -138,8 +149,8 @@ fun MainBody(state: LessonMakerState, navController: NavController, idState: Les
                 .size(50.dp)
                 .shadow(elevation = 5.dp, shape = CircleShape)
                 .clip(CircleShape)
-                .background(Color(72,69,221))
-                .clickable{navController.navigate(Screen.LessonMakerEditScreen.route + "?lessonId=${1}&userId=${userId}")},
+                .background(Color(72, 69, 221))
+                .clickable { navController.navigate(Screen.LessonMakerEditScreen.route + "?lessonId=${1}&userId=${userId}") },
                 contentAlignment = Alignment.Center
                 ) {
                 Icon(
@@ -162,7 +173,7 @@ fun LessonCard(lesson: FLesson, index: String, navController: NavController, use
         .shadow(elevation = 5.dp, shape = RoundedCornerShape(20.dp))
         .height(80.dp)
         .background(Color(238, 238, 255), shape = RoundedCornerShape(20.dp))
-        .clickable{navController.navigate(Screen.LessonMakerEditScreen.route + "?lessonId=${index}&userId=${userId}")},
+        .clickable { navController.navigate(Screen.LessonMakerEditScreen.route + "?lessonId=${index}&userId=${userId}") },
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
@@ -185,7 +196,9 @@ fun LessonCard(lesson: FLesson, index: String, navController: NavController, use
         }
         Row() {
             Icon(imageVector = Icons.Default.Edit, contentDescription = "Edit", modifier = Modifier.padding(5.dp))
-            Icon(imageVector = Icons.Default.Share, contentDescription = "Share", modifier = Modifier.padding(5.dp).clickable { navController.navigate(route = Screen.LessonShareScreen.route + "?lessonId=${index}") })
+            Icon(imageVector = Icons.Default.Share, contentDescription = "Share", modifier = Modifier
+                .padding(5.dp)
+                .clickable { navController.navigate(route = Screen.LessonShareScreen.route + "?lessonId=${index}") })
         }
     }
 }

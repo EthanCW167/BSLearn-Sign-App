@@ -57,14 +57,7 @@ fun PracticeSelectionScreen(
     ) {
         
         
-        Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()){
-            Text(text = "Practice Selection", fontSize = 24.sp, textAlign = TextAlign.Center, modifier = Modifier.padding(top = 8.dp))
-        }
-        Divider(color = Color.Black, modifier = Modifier
-            .padding(16.dp)
-            .height(1.dp)
-            .fillMaxWidth()
-        )
+        topBarPractice(navController = navController)
 
         WordsAdded(wordsAdded = practiceLesson.value.lesson.questionsList.size)
 
@@ -125,7 +118,9 @@ fun PracticeSelectionScreen(
                 }
 
                 Column(
-                    modifier = Modifier.fillMaxWidth().padding(bottom = 20.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 20.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Button(onClick = {
@@ -162,8 +157,9 @@ fun SignPracticeCard(signData: FSignData, navController: NavController, viewMode
             .fillMaxWidth()
             .height(150.dp)
             .clickable {
-                    viewModel.addSign(signData)
-                    viewModel.onSearchTextChange("")   },
+                viewModel.addSign(signData)
+                viewModel.onSearchTextChange("")
+            },
         horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -206,4 +202,45 @@ fun WordsAdded(
     }
     Text(text = "Words Added", fontSize = 16.sp, color = Color.White, modifier = Modifier.padding(top = 5.dp))
 
+}
+
+@Composable
+fun topBarPractice(navController: NavController){
+    Column(modifier = Modifier.fillMaxWidth()) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp)
+                .height(50.dp),
+            verticalAlignment = Alignment.CenterVertically
+
+        ) {
+            Box(contentAlignment = Alignment.Center) {
+                Row(modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp), horizontalArrangement = Arrangement.Start) {
+
+                    Button(
+                        onClick = { navController.navigate(Screen.HomeScreen.route) },
+                        shape = RoundedCornerShape(60),
+                        modifier = Modifier
+                            .width(100.dp)
+                            .shadow(elevation = 5.dp, shape = RoundedCornerShape(60)),
+                        colors = ButtonDefaults.buttonColors(Color.White)
+                    ) {
+                        Text(text = "Back" , color = Color.Black, fontSize = 16.sp)
+                    }
+                }
+                Text(text = "Practice", fontSize = 24.sp)
+            }
+        }
+        Divider(color = Color.Black, modifier = Modifier
+            .padding(5.dp)
+            .padding(horizontal = 15.dp)
+            .padding(bottom = 5.dp)
+            .height(1.dp)
+            .fillMaxWidth()
+            .align(Alignment.CenterHorizontally)
+        )
+    }
 }

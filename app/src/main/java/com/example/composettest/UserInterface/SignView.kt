@@ -4,11 +4,10 @@ import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Divider
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
@@ -26,7 +25,7 @@ import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import androidx.media3.ui.PlayerView
 import androidx.navigation.NavController
-
+import com.example.composettest.Screen
 
 
 @Composable
@@ -39,14 +38,8 @@ fun SignView (navController: NavController, filepath: Int, sign: String){
         .fillMaxSize()
         .padding(8.dp)) {
 
-        Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()){
-            Text(text = "Dictionary", fontSize = 24.sp, textAlign = TextAlign.Center, modifier = Modifier.padding(top = 8.dp))
-        }
-        Divider(color = Color.Black, modifier = Modifier
-            .padding(16.dp)
-            .height(1.dp)
-            .fillMaxWidth()
-        )
+        topBarDictionarySign(navController = navController)
+
         VideoDisplay(filepath = filepath)
 
         Column(
@@ -66,6 +59,47 @@ fun SignView (navController: NavController, filepath: Int, sign: String){
                 Text(modifier = Modifier.padding(20.dp), text = sign, fontSize = 24.sp, textAlign = TextAlign.Center)
             }
         }
+    }
+}
+
+@Composable
+fun topBarDictionarySign(navController: NavController){
+    Column(modifier = Modifier.fillMaxWidth()) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp)
+                .height(50.dp),
+            verticalAlignment = Alignment.CenterVertically
+
+        ) {
+            Box(contentAlignment = Alignment.Center) {
+                Row(modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp), horizontalArrangement = Arrangement.Start) {
+
+                    Button(
+                        onClick = { navController.navigateUp() },
+                        shape = RoundedCornerShape(60),
+                        modifier = Modifier
+                            .width(100.dp)
+                            .shadow(elevation = 5.dp, shape = RoundedCornerShape(60)),
+                        colors = ButtonDefaults.buttonColors(Color.White)
+                    ) {
+                        Text(text = "Back" , color = Color.Black, fontSize = 16.sp)
+                    }
+                }
+                Text(text = "Dictionary", fontSize = 24.sp)
+            }
+        }
+        Divider(color = Color.Black, modifier = Modifier
+            .padding(5.dp)
+            .padding(horizontal = 15.dp)
+            .padding(bottom = 5.dp)
+            .height(1.dp)
+            .fillMaxWidth()
+            .align(Alignment.CenterHorizontally)
+        )
     }
 }
 

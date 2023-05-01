@@ -2,7 +2,9 @@ package com.example.composettest.UserInterface
 
 import android.provider.Settings
 import android.widget.Toast
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
@@ -293,6 +295,13 @@ fun MainBodyIconButton(
 
 @Composable
 fun LessonCard(lessonData: Lesson, navController: NavController){
+
+    var color =
+        if (lessonData.isCompleted == 1){
+            Color(72, 69, 211)
+        } else {
+            Color.White
+        }
     Card(
         Modifier
             .size(90.dp)
@@ -300,7 +309,7 @@ fun LessonCard(lessonData: Lesson, navController: NavController){
             .clickable {navController.navigate(
                 Screen.LessonPreviewScreen.route + "?id=${lessonData.id}"
             )},
-        backgroundColor = Color.LightGray) {
+        backgroundColor = Color(238, 238, 255)) {
         Column(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
@@ -308,13 +317,14 @@ fun LessonCard(lessonData: Lesson, navController: NavController){
             Box(
                 Modifier
                     .padding(5.dp)
-                    .size(40.dp)
+                    .size(45.dp)
                     .clip(shape = RoundedCornerShape(10.dp))
+                    .border(border = BorderStroke(width = 1.dp, Color.Black), shape = RoundedCornerShape(10.dp))
                     .background(
-                        Color.Black, shape = RoundedCornerShape(10.dp)
+                        color, shape = RoundedCornerShape(10.dp)
                     ), contentAlignment = Alignment.Center
             ) {
-                Text(text = "${lessonData.lessonNum}", textAlign = TextAlign.Center, color = Color.White, fontSize = 26.sp)
+                Text(text = "${lessonData.lessonNum}", textAlign = TextAlign.Center, color = Color.Black, fontSize = 30.sp)
             }
             Text(text = lessonData.name, textAlign = TextAlign.Center)
         }

@@ -36,7 +36,8 @@ fun LessonSignViewScreen(
     viewModel: LessonQuestionViewModel = hiltViewModel(),
     orderNum: Int,
     lessonId: Int,
-    numQuestion: Int
+    numQuestion: Int,
+    lessonTitle: String
 ){
 
     //viewModel.getQuestionRedo(lessonId, orderNum)
@@ -49,15 +50,8 @@ fun LessonSignViewScreen(
         .fillMaxSize()
         .padding(8.dp)) {
 
-        Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()){
-            Text(text = "Lesson Sign View", fontSize = 24.sp, textAlign = TextAlign.Center, modifier = Modifier.padding(top = 8.dp))
-            lessonNumBox(lessonNum = 1)
-        }
-        Divider(color = Color.Black, modifier = Modifier
-            .padding(16.dp)
-            .height(1.dp)
-            .fillMaxWidth()
-        )
+        topBarLesson(navController = navController, lessonTitle = lessonTitle)
+
         viewModel.filePath?.let { VideoDisplay(filepath = it) }
 
         Column(
@@ -79,7 +73,7 @@ fun LessonSignViewScreen(
             Column(modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.Bottom,
                 horizontalAlignment = Alignment.CenterHorizontally) {
-                Button(onClick = {viewModel.nextScreen(lessonId, orderNum, numQuestion, navController)} ,modifier = Modifier
+                Button(onClick = {viewModel.nextScreen(lessonId, orderNum, numQuestion, navController, lessonTitle)} ,modifier = Modifier
                     .width(200.dp)
                     .height(70.dp)
                     .padding(15.dp),

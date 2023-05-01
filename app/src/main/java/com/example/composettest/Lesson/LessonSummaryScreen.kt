@@ -34,7 +34,8 @@ import com.example.composettest.Screen
 fun LessonSummaryScreen(
     navController: NavController,
     viewModel: LessonSummaryViewModel = hiltViewModel(),
-    lessonId: Int
+    lessonId: Int,
+    lessonTitle: String
 ){
 
 /*
@@ -65,12 +66,11 @@ fun LessonSummaryScreen(
 
         Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
             Text(
-                text = "Lesson Sign View",
+                text = lessonTitle,
                 fontSize = 24.sp,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.padding(top = 8.dp)
             )
-            lessonNumBox(lessonNum = 1)
         }
         Divider(
             color = Color.Black, modifier = Modifier
