@@ -17,6 +17,10 @@ import com.example.composettest.LessonMaker.LessonMakerEditQuestionsScreen
 import com.example.composettest.LessonMaker.LessonMakerEditScreen
 import com.example.composettest.LessonMaker.LessonMakerOverview
 import com.example.composettest.LessonMaker.LessonShareScreen
+import com.example.composettest.Practice.PracticeMultiChoice
+import com.example.composettest.Practice.PracticeSelectionScreen
+import com.example.composettest.Practice.PracticeSignView
+import com.example.composettest.Practice.PracticeSummaryScreen
 import com.example.composettest.UserInterface.Dictionary
 import com.example.composettest.UserInterface.HomeScreen
 
@@ -199,6 +203,41 @@ fun Navigation() {
         ){
             val lessonId = it.arguments?.getString("lessonId") ?: "1"
             LessonShareScreen(navController = navController, lessonId = lessonId)
+        }
+        composable(route = Screen.PracticeSelectionScreen.route){
+            PracticeSelectionScreen(navController = navController)
+        }
+        composable(route = Screen.PracticeSignView.route + "?questionIndex={questionIndex}",
+            arguments = listOf(
+                navArgument("questionIndex"){
+                    type = NavType.IntType
+                    defaultValue = 0
+                }
+            )
+        ){
+            val questionIndex = it.arguments?.getInt("questionIndex") ?: 0
+            PracticeSignView(navController = navController, questionIndex = questionIndex)
+        }
+        composable(route = Screen.PracticeMultiChoice.route + "?questionIndex={questionIndex}",
+            arguments = listOf(
+                navArgument("questionIndex"){
+                    type = NavType.IntType
+                    defaultValue = 0
+                }
+            )
+        ){
+            val questionIndex = it.arguments?.getInt("questionIndex") ?: 0
+            PracticeMultiChoice(navController = navController, questionIndex = questionIndex)
+        }
+        composable(route = Screen.PracticeSummaryScreen.route + "?userId={userId}",
+            arguments = listOf(
+                navArgument("userId"){
+                    type = NavType.StringType
+                    defaultValue = "-1"
+                }
+        )){
+            val userId = it.arguments?.getString("userId") ?: "-1"
+            PracticeSummaryScreen(navController = navController, userId = userId)
         }
     }
 }

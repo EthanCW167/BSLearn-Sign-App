@@ -31,4 +31,13 @@ sealed class Screen(val route: String) {
     object LessonMakerEditQuestionScreen: Screen("lesson_maker_question_edit")
 
     object LessonShareScreen: Screen("lesson_share")
+
+    object PracticeSelectionScreen: Screen("practice_selection")
+
+    object PracticeSignView: Screen("practice_sign_view")
+
+    object PracticeMultiChoice: Screen("practice_multi_choice")
+
+    object PracticeSummaryScreen: Screen("practice_summary")
 }
+

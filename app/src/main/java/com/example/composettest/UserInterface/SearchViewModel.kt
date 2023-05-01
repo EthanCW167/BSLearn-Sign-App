@@ -87,22 +87,4 @@ class SearchViewModel @Inject constructor(
     }
 }
 
-private val allPersons = listOf(
-    Person(
-        firstName = "Philipp",
-        lastName = "Lackner"
-    ),
-    Person(
-        firstName = "Beff",
-        lastName = "Jezos"
-    ),
-    Person(
-        firstName = "Chris P.",
-        lastName = "Bacon"
-    ),
-    Person(
-        firstName = "Jeve",
-        lastName = "Stops"
-    ),
-)
 

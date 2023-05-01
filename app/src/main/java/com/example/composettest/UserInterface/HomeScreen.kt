@@ -228,13 +228,13 @@ fun MainBody(list: List<TestData>, navController: NavController, state: LessonSt
                 Column(Modifier.fillMaxHeight(), verticalArrangement = Arrangement.Center) {
 
                     MainBodyIconButton(
-                        imageVector = Icons.Default.MenuBook,
+                        imageVector = Icons.Default.WavingHand,
                         description = "Practice",
                         name = "Practice",
                         navController = navController
                     )
                     MainBodyIconButton(
-                        imageVector = Icons.Default.CoffeeMaker,
+                        imageVector = Icons.Default.EditNote,
                         description = "Lesson Maker",
                         name = "Lesson Maker",
                         navController = navController
@@ -279,8 +279,10 @@ fun MainBodyIconButton(
     IconButton(onClick = {
         if (name == "Lesson Maker"){
             navController.navigate(Screen.LessonMakerOverview.route + "?userId=${deviceId}")
-        } else {
+        } else if (name == "Dictionary"){
             navController.navigate(Screen.Dictionary.route)
+        } else {
+            navController.navigate(Screen.PracticeSelectionScreen.route)
         }
     },
         Modifier

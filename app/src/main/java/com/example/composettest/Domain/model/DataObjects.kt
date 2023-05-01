@@ -89,7 +89,7 @@ data class FQuestion(
     val questionId: Int = 0,
     var questionType: String = "sign",
     var signData: FSignData = FSignData(),
-    val isCorrect: Int = 0
+    var isCorrect: Int = 0
 )
 
 
@@ -113,5 +113,6 @@ data class FSignData(
 data class User(
     val name: String = "Name",
     val profilePicturePath: Int = -1,
-    val sharedLesson: MutableList<String> = mutableListOf()
+    val sharedLesson: MutableList<String> = mutableListOf(),
+    val signsLearned: MutableList<String> = mutableListOf()
 )
