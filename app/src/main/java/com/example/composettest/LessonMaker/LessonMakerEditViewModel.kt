@@ -6,9 +6,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
 import com.example.composettest.Domain.model.FLesson
 import com.example.composettest.Domain.model.FQuestion
 import com.example.composettest.Domain.model.FSignData
+import com.example.composettest.Screen
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
@@ -175,6 +177,22 @@ class LessonMakerEditViewModel @Inject constructor(
                     }
                 }
              }
+        }
+    }
+
+    fun nextScreen(questionIndex: Int, navController: NavController, userId: String) {
+
+        if (questionIndex <= lessonEditState.value.lesson.questionsList.size -1) {
+
+
+            if (lessonEditState.value.lesson.questionsList[questionIndex].questionType == "multiple_choice") {
+                navController.navigate(Screen.LessonMakerPreviewSignViewScreen.route + "?questionIndex=${questionIndex}")
+            } else if (lessonEditState.value.lesson.questionsList[questionIndex].questionType == "sign") {
+                navController.navigate(Screen.LessonMakerPreviewMultiChoiceScreen.route + "?questionIndex=${questionIndex}")
+            }
+        }
+        else {
+            navController.navigate(Screen.LessonMakerOverview.route + "?userId=${userId}")
         }
     }
 }

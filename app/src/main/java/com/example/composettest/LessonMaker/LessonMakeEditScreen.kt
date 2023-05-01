@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.composettest.Domain.model.FLesson
 import com.example.composettest.Domain.model.FQuestion
 import com.example.composettest.Screen
 
@@ -52,7 +53,7 @@ fun LessonMakerEditScreen(
         horizontalAlignment = Alignment.CenterHorizontally) {
 
         topBarEdit(navController, userId)
-        previewLessonButton()
+        previewLessonButton(navController, viewModel, lessonId, state.lesson)
         TitleTextField(
             value = lessonTitle.name,
             viewModel = viewModel)
@@ -71,13 +72,21 @@ fun LessonMakerEditScreen(
 }
 
 @Composable
-fun previewLessonButton(){
+fun previewLessonButton(navController: NavController, viewModel: LessonMakerEditViewModel, lessonId: String, lesson: FLesson){
     Box(modifier = Modifier
         .width(300.dp)
         .height(60.dp)
         .padding(5.dp)
         .shadow(elevation = 5.dp, shape = RoundedCornerShape(20.dp))
-        .background(Color(114, 112, 248), shape = RoundedCornerShape(10.dp)),
+        .background(Color(114, 112, 248), shape = RoundedCornerShape(10.dp))
+        .clickable {
+            viewModel.onEvent(EditLessonEvent.SaveLesson(lessonId = lessonId))
+            if (lesson.questionsList[0].questionType == "sign") {
+                navController.navigate(Screen.LessonMakerPreviewSignViewScreen.route + "?questionIndex=${0}")
+            } else if (lesson.questionsList[0].questionType == "multiple_choice") {
+                navController.navigate(Screen.LessonMakerPreviewMultiChoiceScreen.route + "?questionIndex=${0}")
+            }
+             },
         contentAlignment = Alignment.Center){
         Text(text = "Preview Lesson", color = Color.White, fontSize = 24.sp)
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
@@ -267,3 +276,4 @@ fun topBarEdit(navController: NavController, userId: String){
         )
     }
 }
+

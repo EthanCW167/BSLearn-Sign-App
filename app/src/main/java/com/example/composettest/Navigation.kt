@@ -17,6 +17,8 @@ import com.example.composettest.LessonMaker.LessonMakerEditQuestionsScreen
 import com.example.composettest.LessonMaker.LessonMakerEditScreen
 import com.example.composettest.LessonMaker.LessonMakerOverview
 import com.example.composettest.LessonMaker.LessonShareScreen
+import com.example.composettest.LessonMaker.PreviewLesson.LessonMakerPreviewMultiChoiceScreen
+import com.example.composettest.LessonMaker.PreviewLesson.LessonMakerPreviewSignViewScreen
 import com.example.composettest.Practice.PracticeMultiChoice
 import com.example.composettest.Practice.PracticeSelectionScreen
 import com.example.composettest.Practice.PracticeSignView
@@ -254,8 +256,35 @@ fun Navigation() {
             val userId = it.arguments?.getString("userId") ?: "-1"
             PracticeSummaryScreen(navController = navController, userId = userId)
         }
+        composable(route = Screen.LessonMakerPreviewSignViewScreen.route + "?questionIndex={questionIndex}",
+            arguments = listOf(
+                navArgument("questionIndex"){
+                    type = NavType.IntType
+                    defaultValue = 0
+                }
+                )
+        ){
+            val questionIndex = it.arguments?.getInt("questionIndex") ?: 0
+            LessonMakerPreviewSignViewScreen(navController = navController, questionIndex = questionIndex)
+
+
+         }
+        composable(route = Screen.LessonMakerPreviewMultiChoiceScreen.route + "?questionIndex={questionIndex}",
+            arguments = listOf(
+                navArgument("questionIndex"){
+                    type = NavType.IntType
+                    defaultValue = 0
+                }
+            )
+        ){
+            val questionIndex = it.arguments?.getInt("questionIndex") ?: 0
+            LessonMakerPreviewMultiChoiceScreen(navController = navController, questionIndex = questionIndex)
+
+
+        }
     }
 }
+
 
 /*
 abstract class JsonNavType<T> : NavType<T>(isNullableAllowed = false) {
