@@ -155,6 +155,19 @@ class LessonMakerEditViewModel @Inject constructor(
                         lessonEditState.value.lesson.questionsList = questionList
                     }
 
+                    var signs: Int = 0
+                    var questions: Int = 0
+
+                    for(question in lessonEditState.value.lesson.questionsList) {
+                        if (question.questionType == "sign") {
+                            signs += 1
+                        } else if (question.questionType == "multiple_choice") {
+                            questions += 1
+                        }
+                    }
+                    lessonEditState.value.lesson.signs = signs
+                    lessonEditState.value.lesson.questions = questions
+
                     if (event.lessonId == "1"){
                         lessonsDB.document().set(lessonEditState.value.lesson).await()
                     } else {
