@@ -26,6 +26,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -45,6 +46,12 @@ fun HomeScreen(navController: NavController, viewModel: LessonViewModel = hiltVi
 
     val state = viewModel.state.value
 
+    val userState = viewModel.user.value
+
+    var localContext = LocalContext.current
+
+    viewModel.getUserData(Settings.Secure.getString(localContext.contentResolver, Settings.Secure.ANDROID_ID).toString())
+
     ComposetTestTheme {
         // A surface container using the 'background' color from the theme
         Surface(
@@ -57,27 +64,12 @@ fun HomeScreen(navController: NavController, viewModel: LessonViewModel = hiltVi
 
         TopBar()
 
-        MainBody(createTempDataList(), navController = navController, state)
+        MainBody(createTempDataList(), navController = navController, state, userState)
     }
 }
 
-
 @Composable
-fun FirstButton(onClick: () -> Unit) {
-    Row(modifier = Modifier.padding(horizontal = 16.dp)) {
-        Button(onClick = onClick) {
-            Text(text = "Click Me")
-        }
-        Spacer(modifier = Modifier.width(24.dp))
-        Column() {
-            Text(text = "test")
-            Text(text = "Down")
-        }
-    }
-}
-@Preview
-@Composable
-fun InfoBox() {
+fun InfoBox(userState: UserState) {
     Row(
         Modifier
             .padding(top = 100.dp)
@@ -95,9 +87,9 @@ fun InfoBox() {
                 .padding(top = 5.dp)
                 .size(32.dp))
         Column(Modifier.padding(8.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(text = "Streak", fontSize = 18.sp)
+            Text(text = "Streak", fontSize = 18.sp, color = Color.White)
             Spacer(modifier = Modifier.height(5.dp))
-            Text(text = "5", fontSize = 18.sp) // TODO: Placeholder, replace with variable to get Streaks
+            Text(text = "5", fontSize = 20.sp, color = Color.White, fontWeight = FontWeight.Bold) // TODO: Placeholder, replace with variable to get Streaks
         }
 
         Divider(color = Color.Black, modifier = Modifier
@@ -107,9 +99,9 @@ fun InfoBox() {
         )
 
         Column(Modifier.padding(8.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(text = "Signs", fontSize = 18.sp)
+            Text(text = "Signs", fontSize = 18.sp, color = Color.White)
             Spacer(modifier = Modifier.height(5.dp))
-            Text(text = "5", fontSize = 18.sp) // TODO: Placeholder, replace with variable to get Signs
+            Text(text = "${userState.user.signsLearned.size}", fontSize = 20.sp, color = Color.White, fontWeight = FontWeight.Bold)
         }
 
         Icon(
@@ -119,7 +111,6 @@ fun InfoBox() {
                 .size(32.dp))
     }
 }
-//Modifier.height(IntrinsicSize.Min) horizontalArrangement = Arrangement.SpaceEvenly
 
 @Preview
 @Composable
@@ -167,7 +158,7 @@ fun TopBarIconButton(
 }
 
 @Composable
-fun MainBody(list: List<TestData>, navController: NavController, state: LessonState){
+fun MainBody(list: List<TestData>, navController: NavController, state: LessonState, userState: UserState){
     Box() {
         Column(
             Modifier
@@ -178,7 +169,7 @@ fun MainBody(list: List<TestData>, navController: NavController, state: LessonSt
                 .background(Color.White, shape = RoundedCornerShape(20.dp)),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            InfoBox()
+            InfoBox(userState)
             Text(
                 text = "Lessons",
                 Modifier
