@@ -32,6 +32,7 @@ import com.example.composettest.Screen
 fun LessonPreviewScreen(
     navController: NavController,
     viewModel: LessonPreviewViewModel = hiltViewModel(),
+    signViewModel: SignChoiceViewModel = hiltViewModel(),
     id: Int
 ){
 

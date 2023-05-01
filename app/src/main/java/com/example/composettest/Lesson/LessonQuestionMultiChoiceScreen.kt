@@ -27,14 +27,18 @@ import androidx.media3.datasource.DefaultDataSource
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import androidx.media3.ui.PlayerView
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import com.example.composettest.Domain.model.Question
+import com.example.composettest.Practice.PracticeViewModel
 import com.example.composettest.Screen
 
 @Composable
 fun LessonQuestionMultiChoiceScreen (
     navController: NavController,
     viewModel: LessonQuestionViewModel = hiltViewModel(),
+    backStackEntry: NavBackStackEntry = navController.getBackStackEntry(Screen.LessonPreviewScreen.route + "?id={id}"),
+    signViewModel: SignChoiceViewModel = hiltViewModel(remember { backStackEntry }),
     orderNum: Int,
     lessonId: Int,
     numQuestion: Int
@@ -49,7 +53,8 @@ fun LessonQuestionMultiChoiceScreen (
     var selected4 by remember { mutableStateOf(false) }
 
     var answer = viewModel.sign
-    var guess = ""
+    var guess = remember { mutableStateOf("test") }
+    var signData = signViewModel.signDataList.value
 
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -89,23 +94,26 @@ fun LessonQuestionMultiChoiceScreen (
             Column(modifier = Modifier
                 .fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally) {
+
+                var signList = listOf(signData.signDataList.random().sign,signData.signDataList.random().sign,signData.signDataList.random().sign)
+
                 Row(modifier = Modifier
                     .fillMaxWidth()
                     .padding(5.dp),
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    SelectableButton(selected = selected, content = "press", onClick = {
+                    SelectableButton(selected = selected, content = signList[0], onClick = {
                         selected = !selected
                         selected2 = false
                         selected3 = false
                         selected4 = false
-                        guess = "Press"})
-                    SelectableButton(selected = selected2, content = "press2", onClick = {
+                        guess.value = signList[0]})
+                    SelectableButton(selected = selected2, content = signList[1], onClick = {
                         selected2 = !selected2
                         selected = false
                         selected3 = false
                         selected4 = false
-                        guess = "Press2" })
+                        guess.value = signList[1] })
 
                 }
                 Row(modifier = Modifier
@@ -113,18 +121,21 @@ fun LessonQuestionMultiChoiceScreen (
                     .padding(5.dp),
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    SelectableButton(selected = selected3, content = "press3", onClick = {
+                    SelectableButton(selected = selected3, content = signList[2], onClick = {
                         selected3 = !selected3
                         selected = false
                         selected2 = false
                         selected4 = false
-                        guess = "Press3"})
-                    SelectableButton(selected = selected4, content = "press4", onClick = {
-                        selected4 = !selected4
-                        selected = false
-                        selected2 = false
-                        selected3 = false
-                        guess = "Press4"})
+                        guess.value = signList[2]})
+                    if (answer != null) {
+                        SelectableButton(selected = selected4, content = answer, onClick = {
+                            selected4 = !selected4
+                            selected = false
+                            selected2 = false
+                            selected3 = false
+                            guess.value = answer
+                        })
+                    }
 
                 }
                 Column(modifier = Modifier.fillMaxSize(),
@@ -132,7 +143,7 @@ fun LessonQuestionMultiChoiceScreen (
                     horizontalAlignment = Alignment.CenterHorizontally) {
                     Button(onClick = {
 
-                        if (answer == guess) {viewModel.updateQuestion(1); viewModel.nextScreen(lessonId, orderNum, numQuestion, navController)}
+                        if (answer == guess.value) {viewModel.updateQuestion(1); viewModel.nextScreen(lessonId, orderNum, numQuestion, navController)}
                         else {viewModel.updateQuestion(0); viewModel.nextScreen(lessonId, orderNum, numQuestion, navController)}
 
                                      } ,modifier = Modifier

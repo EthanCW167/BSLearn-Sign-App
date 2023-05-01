@@ -167,8 +167,4 @@ class PracticeViewModel @Inject constructor(
             usersDB.document(userId).set(user).await()
         }
     }
-
-    fun multiChoiceSelectSign(signIndex: Int): FSignData{
-        return signDataList.value.signDataList[signIndex]
-    }
 }

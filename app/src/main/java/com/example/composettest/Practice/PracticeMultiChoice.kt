@@ -94,7 +94,7 @@ fun PracticeMultiChoice(
                 .fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally) {
 
-                var signList = listOf<String>(signData.signDataList.random().sign,signData.signDataList.random().sign,signData.signDataList.random().sign)
+                var signList = listOf(signData.signDataList.random().sign,signData.signDataList.random().sign,signData.signDataList.random().sign)
 
                 Row(modifier = Modifier
                     .fillMaxWidth()

@@ -12,6 +12,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.runtime.Composable
@@ -182,6 +183,9 @@ fun QuestionSummaryCard(question: Question, signData: signData){
 
             Icon(imageVector = Icons.Default.Info, contentDescription = "View summary", Modifier.size(25.dp))
         }
-        Icon(imageVector = Icons.Default.Check, contentDescription = "Check Mark", Modifier.size(25.dp))
-    }
+        if (question.isCorrect == 1) {
+            Icon(imageVector = Icons.Default.Check, contentDescription = "Check Mark", Modifier.size(25.dp))
+        } else {
+            Icon(imageVector = Icons.Default.Close, contentDescription = "Check Mark", Modifier.size(25.dp))
+        }}
 }
