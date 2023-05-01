@@ -143,10 +143,12 @@ class PracticeViewModel @Inject constructor(
 
     fun isCorrect(questionIndex: Int, isCorrect: Int){
         if (isCorrect == 1){
+            println("Correct")
             var lessonUpdate = _lesson.value.lesson
             lessonUpdate.questionsList[questionIndex].isCorrect = 1
             _lesson.value = lesson.value.copy(lessonUpdate)
         } else {
+            println("incorrect")
             var lessonUpdate = _lesson.value.lesson
             lessonUpdate.questionsList[questionIndex].isCorrect = 0
             _lesson.value = lesson.value.copy(lessonUpdate)
@@ -164,5 +166,9 @@ class PracticeViewModel @Inject constructor(
         viewModelScope.launch {
             usersDB.document(userId).set(user).await()
         }
+    }
+
+    fun multiChoiceSelectSign(signIndex: Int): FSignData{
+        return signDataList.value.signDataList[signIndex]
     }
 }

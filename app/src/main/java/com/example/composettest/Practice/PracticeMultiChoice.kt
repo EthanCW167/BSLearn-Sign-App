@@ -30,6 +30,7 @@ import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import androidx.media3.ui.PlayerView
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
+import com.example.composettest.Lesson.SelectableButton
 import com.example.composettest.Lesson.lessonNumBox
 import com.example.composettest.Screen
 
@@ -51,7 +52,9 @@ fun PracticeMultiChoice(
     var selected4 by remember { mutableStateOf(false) }
 
     var answer = viewModel.lesson.value.lesson.questionsList[questionIndex].signData.sign
-    var guess = ""
+   // println(answer)
+    var guess = remember { mutableStateOf("test") }
+    var signData = viewModel.signDataList.value
 
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -90,23 +93,28 @@ fun PracticeMultiChoice(
             Column(modifier = Modifier
                 .fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally) {
+
+                var signList = listOf<String>(signData.signDataList.random().sign,signData.signDataList.random().sign,signData.signDataList.random().sign)
+
                 Row(modifier = Modifier
                     .fillMaxWidth()
                     .padding(5.dp),
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    SelectableButton(selected = selected, content = "press", onClick = {
+                    SelectableButton(selected = selected, content = signList[0], onClick = {
                         selected = !selected
                         selected2 = false
                         selected3 = false
                         selected4 = false
-                        guess = "Press"})
-                    SelectableButton(selected = selected2, content = "press2", onClick = {
+                        guess.value = signList[0]
+                    })
+                    SelectableButton(selected = selected2, content = signList[1], onClick = {
                         selected2 = !selected2
                         selected = false
                         selected3 = false
                         selected4 = false
-                        guess = "Press2" })
+                        guess.value = signList[1]
+                    })
 
                 }
                 Row(modifier = Modifier
@@ -114,18 +122,20 @@ fun PracticeMultiChoice(
                     .padding(5.dp),
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    SelectableButton(selected = selected3, content = "press3", onClick = {
+                    SelectableButton(selected = selected3, content = signList[2], onClick = {
                         selected3 = !selected3
                         selected = false
                         selected2 = false
                         selected4 = false
-                        guess = "Press3"})
-                    SelectableButton(selected = selected4, content = "press4", onClick = {
+                        guess.value = signList[2]})
+                    SelectableButton(selected = selected4, content = answer, onClick = {
                         selected4 = !selected4
                         selected = false
                         selected2 = false
                         selected3 = false
-                        guess = "Press4"})
+                        guess.value = answer
+                        //println(guess)
+                     })
 
                 }
                 Column(modifier = Modifier.fillMaxSize(),
@@ -133,9 +143,18 @@ fun PracticeMultiChoice(
                     horizontalAlignment = Alignment.CenterHorizontally) {
                     Button(onClick = {
 
-                        if (answer == guess) {viewModel.isCorrect(questionIndex = questionIndex, isCorrect = 1)}
-                        else {viewModel.isCorrect(questionIndex = questionIndex, isCorrect = 0)}
-                        viewModel.nextScreen(questionIndex+1, navController, deviceId)
+                        println(answer)
+                        println(guess.value)
+
+                        if (answer == guess.value) {
+                            viewModel.isCorrect(questionIndex = questionIndex, isCorrect = 1)
+                            viewModel.nextScreen(questionIndex+1, navController, deviceId)
+                        }
+
+                        else {
+                            viewModel.isCorrect(questionIndex = questionIndex, isCorrect = 0)
+                            viewModel.nextScreen(questionIndex+1, navController, deviceId)
+                        }
 
                     } ,modifier = Modifier
                         .width(200.dp)

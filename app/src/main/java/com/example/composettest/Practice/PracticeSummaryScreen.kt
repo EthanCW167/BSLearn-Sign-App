@@ -181,6 +181,10 @@ fun QuestionSummaryCard(question: FQuestion, viewModel: PracticeViewModel){
                 Text(text = question.signData.sign, fontSize = 20.sp)
             }
         }
-        Icon(imageVector = Icons.Default.Check, contentDescription = "Check Mark", Modifier.size(25.dp))
+        if (question.isCorrect == 1) {
+            Icon(imageVector = Icons.Default.Check, contentDescription = "Check Mark", Modifier.size(25.dp))
+        } else {
+            Icon(imageVector = Icons.Default.Check, contentDescription = "Check Mark", Modifier.size(25.dp))
+        }
     }
 }
