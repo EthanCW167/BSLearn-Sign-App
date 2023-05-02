@@ -58,7 +58,6 @@ class LessonMakerViewModel @Inject constructor(
             }
         }
         _lessonIdState.value = lessonIdState.value.copy(lessonIds = lessonsId)
-        println(lessonIdState.value.lessonIds)
         _lessonState.value = lessonState.value.copy(lessons = lessons)
     }
 

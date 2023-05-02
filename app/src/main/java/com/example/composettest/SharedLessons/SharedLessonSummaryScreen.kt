@@ -1,5 +1,6 @@
-package com.example.composettest.Lesson
+package com.example.composettest.SharedLessons
 
+import android.provider.Settings
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -16,45 +17,41 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
+import com.example.composettest.Domain.model.FQuestion
 import com.example.composettest.Domain.model.Question
 import com.example.composettest.Domain.model.signData
+import com.example.composettest.Lesson.LessonSummaryViewModel
 import com.example.composettest.Screen
 
 @Composable
-fun LessonSummaryScreen(
+fun SharedLessonSummaryScreen(
     navController: NavController,
-    viewModel: LessonSummaryViewModel = hiltViewModel(),
-    lessonId: Int,
+    backStackEntry: NavBackStackEntry = navController.getBackStackEntry(Screen.SharedLessonPreviewScreen.route + "?lessonId={lessonId}"),
+    signViewModel: SharedLessonPlayViewModel = hiltViewModel(remember { backStackEntry }),
     lessonTitle: String
 ){
 
-/*
-    val questionsUi: List<Question> by viewModel.question.collectAsState(initial = emptyList())
-    println(questionsUi.size)
-    println(questionsUi.size)
-    println(questionsUi.size)
-    println(questionsUi.size)
-    val questionTest = questionsUi
+    var deviceId = Settings.Secure.getString(LocalContext.current.contentResolver, Settings.Secure.ANDROID_ID).toString()
 
+    for (question in signViewModel.lessonEditState.value.lesson.questionsList){
+        println(question.isCorrect)
+    }
 
- */
-
-    val state = viewModel.qState.value
-
-    println(state.questions.size)
-    println(state.questions.size)
-    println(state.questions.size)
-    println(state.questions.size)
+    val state = signViewModel.lessonEditState.value.lesson
 
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -115,11 +112,10 @@ fun LessonSummaryScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 var questionNumber = 0
-                items(state.questions) { question ->
+                items(state.questionsList) { question ->
                     if (question.questionType != "sign") {
                         questionNumber += 1
-                        viewModel.getSignData(question)
-                        viewModel.signData?.let { QuestionSummaryCard(question = question, it, questionNumber) }
+                        QuestionSummaryCard(question = question, questionNumber = questionNumber)
                     }
                 }
             }
@@ -136,9 +132,8 @@ fun LessonSummaryScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Button(onClick = {
-                    viewModel.lesson?.let { viewModel.insertLesson(it) }
-                    navController.navigate(Screen.HomeScreen.route)
-                                 },
+                    navController.navigate(Screen.SharedLessonsScreen.route + "?userId=${deviceId}")
+                },
                     modifier = Modifier
                         .width(200.dp)
                         .height(60.dp),
@@ -150,34 +145,37 @@ fun LessonSummaryScreen(
 
             }
         }
-        }
     }
+}
 
 @Composable
-fun QuestionSummaryCard(question: Question, signData: signData, questionNumber: Int){
+fun QuestionSummaryCard(question: FQuestion, questionNumber: Int){
     val colorType: Color =
-    if (question.isCorrect == 1) Color(106, 192, 115)
-    else Color(233,80,80)
+        if (question.isCorrect == 1) Color(106, 192, 115)
+        else Color(233,80,80)
     Row(
         Modifier
             .fillMaxWidth()
             .height(150.dp),
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.CenterVertically) {
-        Image(imageVector = Icons.Default.Image, contentDescription = "Question Preview", modifier = Modifier
+        horizontalArrangement = Arrangement.SpaceEvenly,
+        verticalAlignment = Alignment.CenterVertically) {
+        Image(painter = painterResource(id = question.signData.previewFilePath), contentDescription = "Question Preview", modifier = Modifier
             .height(140.dp)
             .width(180.dp)
             .padding(5.dp)
             .background(Color.LightGray, shape = RoundedCornerShape(20.dp))
             .border(border = BorderStroke(1.dp, Color.Black), shape = RoundedCornerShape(20.dp)))
-        Column(modifier = Modifier.fillMaxHeight().padding(bottom = 15.dp), horizontalAlignment = Alignment.CenterHorizontally,
+        Column(modifier = Modifier
+            .fillMaxHeight()
+            .padding(bottom = 15.dp), horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Bottom) {
             Row(
                 Modifier
                     .width(160.dp)
                     .height(70.dp)
                     .background(
-                        colorType, shape = RoundedCornerShape(20.dp)),
+                        colorType, shape = RoundedCornerShape(20.dp)
+                    ),
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically) {
                 Text(text = "Question $questionNumber", fontSize = 20.sp)

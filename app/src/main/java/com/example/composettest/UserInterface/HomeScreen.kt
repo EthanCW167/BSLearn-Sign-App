@@ -41,10 +41,14 @@ import com.example.composettest.Lesson.LessonState
 import com.example.composettest.Lesson.LessonViewModel
 import com.example.composettest.R
 import com.example.composettest.Screen
+import com.example.composettest.SharedLessons.SharedLessonsViewModel
 import com.example.composettest.ui.theme.ComposetTestTheme
 
 @Composable
-fun HomeScreen(navController: NavController, viewModel: LessonViewModel = hiltViewModel()) {
+fun HomeScreen(
+    navController: NavController,
+    viewModel: LessonViewModel = hiltViewModel(),
+    shareViewModel: SharedLessonsViewModel = hiltViewModel()) {
 
     val state = viewModel.state.value
 
@@ -52,7 +56,11 @@ fun HomeScreen(navController: NavController, viewModel: LessonViewModel = hiltVi
 
     var localContext = LocalContext.current
 
-    viewModel.getUserData(Settings.Secure.getString(localContext.contentResolver, Settings.Secure.ANDROID_ID).toString())
+    val userId = Settings.Secure.getString(localContext.contentResolver, Settings.Secure.ANDROID_ID).toString()
+
+    viewModel.getUserData(userId)
+
+    shareViewModel.getUser(userId)
 
     ComposetTestTheme {
         // A surface container using the 'background' color from the theme
@@ -224,28 +232,32 @@ fun MainBody(list: List<TestData>, navController: NavController, state: LessonSt
                         imageVector = Icons.Default.WavingHand,
                         description = "Practice",
                         name = "Practice",
-                        navController = navController
+                        navController = navController,
+                        size = 90
                     )
                     MainBodyIconButton(
                         imageVector = Icons.Default.EditNote,
                         description = "Lesson Maker",
                         name = "Lesson Maker",
-                        navController = navController
+                        navController = navController,
+                        size = 120
                     )
                 }
                 Column(Modifier.fillMaxHeight(), verticalArrangement = Arrangement.Center) {
 
                     MainBodyIconButton(
                         imageVector = Icons.Rounded.List,
-                        description = "Practice",
+                        description = "Dictionary",
                         name = "Dictionary",
-                        navController = navController
+                        navController = navController,
+                        size = 120
                     )
                     MainBodyIconButton(
-                        imageVector = Icons.Default.PeopleOutline,
-                        description = "Community",
-                        name = "Community",
-                        navController = navController
+                        imageVector = Icons.Default.MenuBook,
+                        description = "Community Lessons",
+                        name = "Community Lessons",
+                        navController = navController,
+                        size = 100
                     )
                 }
             }
@@ -265,17 +277,20 @@ fun MainBodyIconButton(
     description: String,
     name: String,
     navController: NavController,
+    size: Int
 ) {
 
     var deviceId = Settings.Secure.getString(LocalContext.current.contentResolver, Settings.Secure.ANDROID_ID).toString()
 
     IconButton(onClick = {
-        if (name == "Lesson Maker"){
+        if (name == "Lesson Maker") {
             navController.navigate(Screen.LessonMakerOverview.route + "?userId=${deviceId}")
-        } else if (name == "Dictionary"){
+        } else if (name == "Dictionary") {
             navController.navigate(Screen.Dictionary.route)
-        } else {
+        } else if (name == "Practice") {
             navController.navigate(Screen.PracticeSelectionScreen.route)
+        } else if (name == "Community Lessons") {
+            navController.navigate(Screen.SharedLessonsScreen.route + "?userId=${deviceId}")
         }
     },
         Modifier
@@ -284,10 +299,22 @@ fun MainBodyIconButton(
             .shadow(elevation = 5.dp, shape = RoundedCornerShape(20.dp))
             .clip(shape = RoundedCornerShape(20.dp))
             .background(Color(238, 238, 255), shape = RoundedCornerShape(20.dp))) {
-        Column(verticalArrangement = Arrangement.SpaceEvenly, horizontalAlignment = Alignment.CenterHorizontally) {
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
 
-            Icon(imageVector = imageVector, contentDescription = description, Modifier.size(120.dp))
-            Text(text = "$name", textAlign = TextAlign.Center)
+            Icon(
+                imageVector = imageVector,
+                contentDescription = description,
+                Modifier.size(size.dp)
+            )
+
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Bottom,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+
+                Text(text = "$name", textAlign = TextAlign.Center, modifier = Modifier.padding(bottom = 5.dp))
+            }
         }
     }
 }
@@ -306,9 +333,11 @@ fun LessonCard(lessonData: Lesson, navController: NavController){
         Modifier
             .size(90.dp)
             .padding(5.dp)
-            .clickable {navController.navigate(
-                Screen.LessonPreviewScreen.route + "?id=${lessonData.id}"
-            )},
+            .clickable {
+                navController.navigate(
+                    Screen.LessonPreviewScreen.route + "?id=${lessonData.id}"
+                )
+            },
         backgroundColor = Color(238, 238, 255)) {
         Column(
             verticalArrangement = Arrangement.Center,
@@ -319,7 +348,10 @@ fun LessonCard(lessonData: Lesson, navController: NavController){
                     .padding(5.dp)
                     .size(45.dp)
                     .clip(shape = RoundedCornerShape(10.dp))
-                    .border(border = BorderStroke(width = 1.dp, Color.Black), shape = RoundedCornerShape(10.dp))
+                    .border(
+                        border = BorderStroke(width = 1.dp, Color.Black),
+                        shape = RoundedCornerShape(10.dp)
+                    )
                     .background(
                         color, shape = RoundedCornerShape(10.dp)
                     ), contentAlignment = Alignment.Center

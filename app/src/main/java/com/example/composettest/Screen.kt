@@ -43,5 +43,15 @@ sealed class Screen(val route: String) {
     object LessonMakerPreviewSignViewScreen: Screen("preview_sign_view")
 
     object LessonMakerPreviewMultiChoiceScreen: Screen("preview_multi_choice")
+
+    object SharedLessonsScreen: Screen("shared_lessons")
+
+    object SharedLessonSignViewScreen: Screen("shared_sign_view")
+
+    object SharedLessonMultiChoiceScreen: Screen("shared_multi_choice")
+
+    object SharedLessonSummaryScreen: Screen("shared_summary")
+
+    object SharedLessonPreviewScreen: Screen("shared_preview")
 }
 
