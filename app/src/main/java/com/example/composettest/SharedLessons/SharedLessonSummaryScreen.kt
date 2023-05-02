@@ -35,6 +35,7 @@ import com.example.composettest.Domain.model.FQuestion
 import com.example.composettest.Domain.model.Question
 import com.example.composettest.Domain.model.signData
 import com.example.composettest.Lesson.LessonSummaryViewModel
+import com.example.composettest.Lesson.SignLearnedViewModel
 import com.example.composettest.Screen
 
 @Composable
@@ -42,14 +43,13 @@ fun SharedLessonSummaryScreen(
     navController: NavController,
     backStackEntry: NavBackStackEntry = navController.getBackStackEntry(Screen.SharedLessonPreviewScreen.route + "?lessonId={lessonId}"),
     signViewModel: SharedLessonPlayViewModel = hiltViewModel(remember { backStackEntry }),
+    signLearnViewModel: SignLearnedViewModel = hiltViewModel(),
     lessonTitle: String
 ){
 
     var deviceId = Settings.Secure.getString(LocalContext.current.contentResolver, Settings.Secure.ANDROID_ID).toString()
 
-    for (question in signViewModel.lessonEditState.value.lesson.questionsList){
-        println(question.isCorrect)
-    }
+    signLearnViewModel.getUser(deviceId)
 
     val state = signViewModel.lessonEditState.value.lesson
 
@@ -116,6 +116,8 @@ fun SharedLessonSummaryScreen(
                     if (question.questionType != "sign") {
                         questionNumber += 1
                         QuestionSummaryCard(question = question, questionNumber = questionNumber)
+                    } else {
+                        signLearnViewModel.updateSigns(question.signData.sign)
                     }
                 }
             }
@@ -132,6 +134,7 @@ fun SharedLessonSummaryScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Button(onClick = {
+                    signLearnViewModel.saveUserChanges(deviceId)
                     navController.navigate(Screen.SharedLessonsScreen.route + "?userId=${deviceId}")
                 },
                     modifier = Modifier

@@ -55,10 +55,7 @@ class SharedLessonsViewModel @Inject constructor(
         viewModelScope.launch {
             val userSnapshot = userDB.document(userId).get().await()
             _user.value  = user.value.copy(user = userSnapshot.toObject<User>()!!)
-            //println(user.value.user.sharedLesson.size)
         }
-        //println(user.value.user.sharedLesson.size)
-
     }
 
     fun getLessons(){

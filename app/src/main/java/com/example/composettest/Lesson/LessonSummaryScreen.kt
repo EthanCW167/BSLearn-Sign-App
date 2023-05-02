@@ -1,5 +1,6 @@
 package com.example.composettest.Lesson
 
+import android.provider.Settings
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -21,6 +22,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -34,6 +37,7 @@ import com.example.composettest.Screen
 fun LessonSummaryScreen(
     navController: NavController,
     viewModel: LessonSummaryViewModel = hiltViewModel(),
+    signsViewModel: SignLearnedViewModel = hiltViewModel(),
     lessonId: Int,
     lessonTitle: String
 ){
@@ -51,10 +55,11 @@ fun LessonSummaryScreen(
 
     val state = viewModel.qState.value
 
-    println(state.questions.size)
-    println(state.questions.size)
-    println(state.questions.size)
-    println(state.questions.size)
+    val context = LocalContext.current
+
+    val userId = Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID).toString()
+
+    signsViewModel.getUser(userId)
 
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -116,10 +121,12 @@ fun LessonSummaryScreen(
             ) {
                 var questionNumber = 0
                 items(state.questions) { question ->
+                    viewModel.getSignData(question)
                     if (question.questionType != "sign") {
                         questionNumber += 1
-                        viewModel.getSignData(question)
                         viewModel.signData?.let { QuestionSummaryCard(question = question, it, questionNumber) }
+                    } else {
+                        viewModel.signData?.sign?.let { signsViewModel.updateSigns(it) }
                     }
                 }
             }
@@ -137,6 +144,7 @@ fun LessonSummaryScreen(
             ) {
                 Button(onClick = {
                     viewModel.lesson?.let { viewModel.insertLesson(it) }
+                    signsViewModel.saveUserChanges(userId)
                     navController.navigate(Screen.HomeScreen.route)
                                  },
                     modifier = Modifier
@@ -164,20 +172,23 @@ fun QuestionSummaryCard(question: Question, signData: signData, questionNumber: 
             .height(150.dp),
             horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically) {
-        Image(imageVector = Icons.Default.Image, contentDescription = "Question Preview", modifier = Modifier
+        Image(painter = painterResource(id = signData.previewFilePath), contentDescription = "Question Preview", modifier = Modifier
             .height(140.dp)
             .width(180.dp)
             .padding(5.dp)
             .background(Color.LightGray, shape = RoundedCornerShape(20.dp))
             .border(border = BorderStroke(1.dp, Color.Black), shape = RoundedCornerShape(20.dp)))
-        Column(modifier = Modifier.fillMaxHeight().padding(bottom = 15.dp), horizontalAlignment = Alignment.CenterHorizontally,
+        Column(modifier = Modifier
+            .fillMaxHeight()
+            .padding(bottom = 15.dp), horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Bottom) {
             Row(
                 Modifier
                     .width(160.dp)
                     .height(70.dp)
                     .background(
-                        colorType, shape = RoundedCornerShape(20.dp)),
+                        colorType, shape = RoundedCornerShape(20.dp)
+                    ),
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically) {
                 Text(text = "Question $questionNumber", fontSize = 20.sp)

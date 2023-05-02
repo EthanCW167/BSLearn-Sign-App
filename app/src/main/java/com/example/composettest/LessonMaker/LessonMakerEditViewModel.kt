@@ -184,9 +184,9 @@ class LessonMakerEditViewModel @Inject constructor(
 
 
             if (lessonEditState.value.lesson.questionsList[questionIndex].questionType == "multiple_choice") {
-                navController.navigate(Screen.LessonMakerPreviewSignViewScreen.route + "?questionIndex=${questionIndex}")
-            } else if (lessonEditState.value.lesson.questionsList[questionIndex].questionType == "sign") {
                 navController.navigate(Screen.LessonMakerPreviewMultiChoiceScreen.route + "?questionIndex=${questionIndex}")
+            } else if (lessonEditState.value.lesson.questionsList[questionIndex].questionType == "sign") {
+                navController.navigate(Screen.LessonMakerPreviewSignViewScreen.route + "?questionIndex=${questionIndex}")
             }
         }
         else {
