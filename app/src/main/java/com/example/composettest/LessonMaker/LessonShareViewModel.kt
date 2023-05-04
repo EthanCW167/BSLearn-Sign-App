@@ -33,10 +33,10 @@ class LessonShareViewModel @Inject constructor(
     val lessonState: MutableState<LessonMakerSelectedState> = _lessonState
 
     private val _usersState = mutableStateOf(SharedUsersState())
-    val usersState: State<SharedUsersState> = _usersState
+    val usersState: MutableState<SharedUsersState> = _usersState
 
     private val _usersIdState = mutableStateOf(UserIdListState())
-    val usersIdState: State<UserIdListState> = _usersIdState
+    val usersIdState: MutableState<UserIdListState> = _usersIdState
 
     var lessonIdGlobal: String = ""
 
@@ -60,21 +60,28 @@ class LessonShareViewModel @Inject constructor(
         }
     }
 
-    fun getUsers(lessonId: String) = CoroutineScope(Dispatchers.IO).launch {
+    fun getUsers(lessonId: String) {
 
         var users = mutableListOf<User>()
         var userIdList = mutableListOf<String>()
 
-        for (userId in lessonState.value.lesson.sharedUserList)
-            usersDb.document(userId).get().addOnSuccessListener { user ->
-                if (user != null){
-                    users.add(user.toObject<User>()!!)
-                    userIdList.add(user.id)
 
-                    _usersState.value = usersState.value.copy(users)
-                    _usersIdState.value = usersIdState.value.copy(userIdList)
+        viewModelScope.launch {
+
+        for (userId in lessonState.value.lesson.sharedUserList) {
+            viewModelScope.launch {
+                usersDb.document(userId).get().addOnSuccessListener { user ->
+                    if (user != null) {
+                        users.add(user.toObject<User>()!!)
+                        userIdList.add(user.id)
+
+                        _usersState.value = usersState.value.copy(users)
+                        _usersIdState.value = usersIdState.value.copy(userIdList)
+                    }
                 }
             }
+        }
+        }
     }
 
     fun onEvent(event: ShareLessonEvent): String{

@@ -38,11 +38,6 @@ fun LessonShareScreen(
 ){
 
     val lessonState = viewModel.lessonState.value
-
-    val usersState = viewModel.usersState.value
-
-    val userIdListState = viewModel.usersIdState.value
-
     viewModel.lessonIdGlobal = lessonId
 
     Surface(
@@ -52,7 +47,7 @@ fun LessonShareScreen(
 
 
     Column(Modifier.fillMaxSize()) {
-        topBar(navController)
+        topBarShare(navController)
         LessonCard(lesson = lessonState.lesson)
         Column(modifier = Modifier
             .fillMaxSize()
@@ -67,18 +62,19 @@ fun LessonShareScreen(
                 .fillMaxWidth()
                 .align(Alignment.CenterHorizontally)
             )
+
+            val usersState = viewModel.usersState.value
+
+            val userIdListState = viewModel.usersIdState.value
+
             LazyColumn(modifier = Modifier
                 .fillMaxSize()
                 .padding(top = 20.dp)
                 .padding(horizontal = 25.dp)){
-                println("here")
-                println(usersState.Users.size)
                 items(usersState.Users) { user ->
 
                     var index = usersState.Users.indexOf(user)
-                    //println("Here")
-                    //println(lessonState.lesson)
-                    UserCard(user = user, lessonState.lesson.sharedUserList[index])
+                    UserCard(user = user, userIdListState.userIdList[index])
                 }
             }
         }
@@ -198,5 +194,44 @@ fun UserCard(user: User, userId: String){
             )
 
 
+    }
+}
+
+@Composable
+fun topBarShare(navController: NavController){
+    Column(modifier = Modifier.fillMaxWidth()) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp)
+                .height(50.dp),
+            verticalAlignment = Alignment.CenterVertically
+
+        ) {
+            Box(contentAlignment = Alignment.Center) {
+                Row(modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp), horizontalArrangement = Arrangement.Start) {
+
+                    Button(
+                        onClick = { navController.navigateUp() },
+                        shape = RoundedCornerShape(60),
+                        modifier = Modifier.width(100.dp).shadow(elevation = 5.dp, shape = RoundedCornerShape(60)),
+                        colors = ButtonDefaults.buttonColors(Color.White)
+                    ) {
+                        Text(text = "Back" , color = Color.Black, fontSize = 16.sp)
+                    }
+                }
+                Text(text = "Lesson Share", fontSize = 24.sp)
+            }
+        }
+        Divider(color = Color.Black, modifier = Modifier
+            .padding(5.dp)
+            .padding(horizontal = 15.dp)
+            .padding(bottom = 5.dp)
+            .height(1.dp)
+            .fillMaxWidth()
+            .align(Alignment.CenterHorizontally)
+        )
     }
 }
