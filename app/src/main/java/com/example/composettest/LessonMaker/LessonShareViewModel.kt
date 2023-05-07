@@ -85,9 +85,9 @@ class LessonShareViewModel @Inject constructor(
     }
 
     fun onEvent(event: ShareLessonEvent): String{
+        var exception = ""
         when(event){
             is ShareLessonEvent.AddUser -> {
-                var exception = ""
                 var string = event.userId
                 println(string)
                 println(event.userId)
@@ -96,7 +96,9 @@ class LessonShareViewModel @Inject constructor(
                 } else {
                     if (event.userId != "") {
                         viewModelScope.launch {
+                            println("before")
                             if (usersDb.document(event.userId).get().await().exists()) {
+                                println("found")
                                 usersDb.document(event.userId).get()
                                     .addOnSuccessListener { document ->
                                         if (document != null) {
@@ -117,6 +119,7 @@ class LessonShareViewModel @Inject constructor(
                                                 usersDb.document(event.userId).set(user).await()
                                                 lessonsDB.document(lessonIdGlobal)
                                                     .set(lessonState.value.lesson)
+                                                getUsers(lessonIdGlobal)
                                             }
                                         }
                                     }
@@ -127,11 +130,12 @@ class LessonShareViewModel @Inject constructor(
                     } else {
                         return "empty search"
                     }
-                    getUsers(lessonIdGlobal)
                     if (exception == "not found"){
+                        println("here")
                         return exception
                     } else {
-                        return "user shared"
+                        println("here2")
+                        return  "user shared"
                     }
                 }
             }

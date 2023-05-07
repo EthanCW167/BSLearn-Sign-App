@@ -92,7 +92,7 @@ fun PracticeSummaryScreen(
             ) {
                 Text(
                     modifier = Modifier.padding(20.dp),
-                    text = "Lesson Complete",
+                    text = "Practice Complete",
                     fontSize = 24.sp,
                     textAlign = TextAlign.Center
                 )

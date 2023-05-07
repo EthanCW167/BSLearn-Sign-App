@@ -218,6 +218,11 @@ fun QuestionsList(navController: NavController, state: LessonMakerSelectedState,
 
 @Composable
 fun QuestionCard(navController: NavController, question: FQuestion, orderNum: Int, questionIndex: Int, lessonId: String, userId: String){
+    val questionType = if (question.questionType == "sign") {
+            "Learn Sign"
+    } else {
+            "Multiple Choice"
+    }
     Row(modifier = Modifier
         .fillMaxWidth()
         .padding(5.dp)
@@ -226,7 +231,7 @@ fun QuestionCard(navController: NavController, question: FQuestion, orderNum: In
 
         Text(text = "$orderNum", fontSize = 60.sp, modifier = Modifier.padding(horizontal = 20.dp))
         Spacer(modifier = Modifier.width(30.dp))
-        Text(text = "${question.questionType}", fontSize = 20.sp)
+        Text(text = questionType, fontSize = 20.sp)
         Row(modifier = Modifier
             .fillMaxWidth()
             .padding(5.dp),

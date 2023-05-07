@@ -200,7 +200,7 @@ fun WordsAdded(
         .background(Color.White, shape = RoundedCornerShape(13.dp)), contentAlignment = Alignment.Center){
         Text(text = "${wordsAdded/2}", fontSize = 26.sp, fontWeight = FontWeight.Bold)
     }
-    Text(text = "Words Added", fontSize = 16.sp, color = Color.White, modifier = Modifier.padding(top = 5.dp))
+    Text(text = "Signs Added", fontSize = 16.sp, color = Color.White, modifier = Modifier.padding(top = 5.dp))
 
 }
 

@@ -133,7 +133,7 @@ fun MainBody(state: LessonMakerState, navController: NavController, idState: Les
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(10.dp)
-                .height(300.dp)){
+                .height(420.dp)){
             items(state.lessons) { lesson ->
 
                 val index = state.lessons.indexOf(lesson)

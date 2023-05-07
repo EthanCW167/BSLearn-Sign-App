@@ -114,7 +114,8 @@ fun PreviewDescription(name: String, signs: Int, questions: Int, description: St
         Text(text = "This is a community made lesson.", modifier = Modifier
             .padding(horizontal = 20.dp)
             .padding(top = 20.dp)
-            .fillMaxWidth())
+            .fillMaxWidth(),
+            textAlign = TextAlign.Center)
         Spacer(modifier = Modifier.size(20.dp))
         Text(text = description, modifier = Modifier
             .padding(horizontal = 20.dp)
@@ -146,13 +147,13 @@ fun title(name: String){
     Row(
         Modifier
             .fillMaxWidth()
-            .padding(top = 8.dp)
-            .padding(horizontal = 15.dp),
+            .padding(top = 12.dp)
+            .padding(horizontal = 20.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
 
     ) {
-        Text(text = name, fontSize = 24.sp, textAlign = TextAlign.Start)
+        Text(text = name, fontSize = 22.sp, textAlign = TextAlign.Start)
 
     }
 }

@@ -47,8 +47,10 @@ import com.example.composettest.ui.theme.ComposetTestTheme
 @Composable
 fun HomeScreen(
     navController: NavController,
-    viewModel: LessonViewModel = hiltViewModel(),
-    shareViewModel: SharedLessonsViewModel = hiltViewModel()) {
+    viewModel: LessonViewModel = hiltViewModel(), // View model to manage databases
+    shareViewModel: SharedLessonsViewModel = hiltViewModel())
+{
+    // state values are assigned to notify Compose recomposition is needed on value change
 
     val state = viewModel.state.value
 
@@ -56,7 +58,7 @@ fun HomeScreen(
 
     var localContext = LocalContext.current
 
-    val userId = Settings.Secure.getString(localContext.contentResolver, Settings.Secure.ANDROID_ID).toString()
+    val userId = Settings.Secure.getString(localContext.contentResolver, Settings.Secure.ANDROID_ID).toString() // Android device Id
 
     viewModel.getUserData(userId)
 
@@ -78,7 +80,7 @@ fun HomeScreen(
     }
 }
 
-@Composable
+@Composable // Composable to handle the information about streaks and signs learned
 fun InfoBox(userState: UserState) {
     Row(
         Modifier
@@ -99,7 +101,7 @@ fun InfoBox(userState: UserState) {
         Column(Modifier.padding(8.dp), horizontalAlignment = Alignment.CenterHorizontally) {
             Text(text = "Streak", fontSize = 18.sp, color = Color.White)
             Spacer(modifier = Modifier.height(5.dp))
-            Text(text = "5", fontSize = 20.sp, color = Color.White, fontWeight = FontWeight.Bold) // TODO: Placeholder, replace with variable to get Streaks
+            Text(text = "5", fontSize = 20.sp, color = Color.White, fontWeight = FontWeight.Bold)
         }
 
         Divider(color = Color.Black, modifier = Modifier

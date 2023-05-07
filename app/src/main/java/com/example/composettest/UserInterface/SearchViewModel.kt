@@ -25,7 +25,11 @@ class SearchViewModel @Inject constructor(
 
 ): ViewModel() {
 
-    var signDataDB = Firebase.firestore.collection("signData")
+    // View Model For Dictionary
+
+    var signDataDB = Firebase.firestore.collection("signData") // reference to firestore signData table
+
+    // States and state flows are used to notify Compose that UI recomposition is needed upon value change
 
     private val _searchText = MutableStateFlow("")
     val searchText = _searchText.asStateFlow()
