@@ -17,6 +17,7 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -28,6 +29,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import com.example.composettest.Domain.model.Question
 import com.example.composettest.Domain.model.signData
@@ -36,7 +38,8 @@ import com.example.composettest.Screen
 @Composable
 fun LessonSummaryScreen(
     navController: NavController,
-    viewModel: LessonSummaryViewModel = hiltViewModel(),
+    backStackEntry: NavBackStackEntry = navController.getBackStackEntry(Screen.LessonPreviewScreen.route + "?id={id}"),
+    viewModel: LessonSummaryViewModel = hiltViewModel(remember { backStackEntry }),
     signsViewModel: SignLearnedViewModel = hiltViewModel(),
     lessonId: Int,
     lessonTitle: String
@@ -119,14 +122,16 @@ fun LessonSummaryScreen(
                 verticalArrangement = Arrangement.SpaceEvenly,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                var questionNumber = 0
+                var questionNumber = 1
                 items(state.questions) { question ->
                     viewModel.getSignData(question)
                     if (question.questionType != "sign") {
                         questionNumber += 1
                         viewModel.signData?.let { QuestionSummaryCard(question = question, it, questionNumber) }
+
                     } else {
                         viewModel.signData?.sign?.let { signsViewModel.updateSigns(it) }
+
                     }
                 }
             }
@@ -177,6 +182,7 @@ fun QuestionSummaryCard(question: Question, signData: signData, questionNumber: 
             .width(180.dp)
             .padding(5.dp)
             .background(Color.LightGray, shape = RoundedCornerShape(20.dp))
+            .clip(shape = RoundedCornerShape(20.dp))
             .border(border = BorderStroke(1.dp, Color.Black), shape = RoundedCornerShape(20.dp)))
         Column(modifier = Modifier
             .fillMaxHeight()

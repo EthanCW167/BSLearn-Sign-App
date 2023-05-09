@@ -153,9 +153,6 @@ fun BodyIconButton(
 
 @Composable
 fun SignDictionaryCard(signData: FSignData, navController: NavController) {
-    println(R.raw.sample1)
-    println(R.raw.sample2)
-    println(2131623936)
     Row(
         Modifier
             .fillMaxWidth()
@@ -172,6 +169,7 @@ fun SignDictionaryCard(signData: FSignData, navController: NavController) {
                 .width(180.dp)
                 .padding(5.dp)
                 .background(Color.White, shape = RoundedCornerShape(20.dp))
+                .clip(shape = RoundedCornerShape(20.dp))
                 .border(border = BorderStroke(1.dp, Color.Black), shape = RoundedCornerShape(20.dp))
         )
             Row(

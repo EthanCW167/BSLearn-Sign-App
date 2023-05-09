@@ -46,7 +46,7 @@ fun LessonQuestionMultiChoiceScreen (
 
 ){
 
-    viewModel.getQuestionRedo(lessonId,orderNum,numQuestion)
+    //viewModel.getQuestionRedo(lessonId,orderNum,numQuestion)
 
     var selected by remember { mutableStateOf(false) }
     var selected2 by remember { mutableStateOf(false) }
@@ -137,8 +137,14 @@ fun LessonQuestionMultiChoiceScreen (
                     horizontalAlignment = Alignment.CenterHorizontally) {
                     Button(onClick = {
 
-                        if (answer == guess.value) {viewModel.updateQuestion(1); viewModel.nextScreen(lessonId, orderNum, numQuestion, navController, lessonTitle)}
-                        else {viewModel.updateQuestion(0); viewModel.nextScreen(lessonId, orderNum, numQuestion, navController, lessonTitle)}
+                        if (answer == guess.value) {
+                            viewModel.updateQuestion(1)
+                            viewModel.nextScreen(lessonId, orderNum, numQuestion, navController, lessonTitle)
+
+                        } else {
+                            viewModel.updateQuestion(0)
+                            viewModel.nextScreen(lessonId, orderNum, numQuestion, navController, lessonTitle)
+                        }
 
                                      } ,modifier = Modifier
                         .width(200.dp)

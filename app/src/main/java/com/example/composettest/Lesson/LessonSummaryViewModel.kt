@@ -63,7 +63,8 @@ class LessonSummaryViewModel @Inject constructor(
 
     fun getSignData(question: Question){
         viewModelScope.launch {
-            signData = lessonUseCases.getSignDataByIdUseCase(question.signId)}
+            signData = lessonUseCases.getSignDataByIdUseCase(question.signId)
+        }
     }
 
     fun insertLesson(lesson: Lesson){

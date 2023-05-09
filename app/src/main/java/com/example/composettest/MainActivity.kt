@@ -37,6 +37,32 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             Navigation()
+
+
+            println(R.raw.hello)
+
+            println("${R.raw.a} :a")
+            println("${R.raw.b} :b")
+            println("${R.raw.c} :c")
+            println("${R.raw.thankyou} :thank you")
+            println("${R.raw.basketball} :basketball")
+            println("${R.raw.football} :football")
+            println("${R.raw.goodbye} :goodbye")
+            println("${R.raw.rugby} : rugby")
+            println("${R.raw.tennis} : tennis")
+
+            println(R.drawable.hello_sign)
+
+            println("${R.drawable.a} :a")
+            println("${R.drawable.bnew} :b")
+            println("${R.drawable.c} :c")
+            println("${R.drawable.thankyou} :thank you")
+            println("${R.drawable.basketball} :basketball")
+            println("${R.drawable.football} :football")
+            println("${R.drawable.goodbye} :goodbye")
+            println("${R.drawable.rugby} :rugby")
+            println("${R.drawable.tennis} :tennis")
+
         }
     }
 

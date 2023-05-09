@@ -9,10 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.composettest.Lesson.LessonPreviewScreen
-import com.example.composettest.Lesson.LessonQuestionMultiChoiceScreen
-import com.example.composettest.Lesson.LessonSignViewScreen
-import com.example.composettest.Lesson.LessonSummaryScreen
+import com.example.composettest.Lesson.*
 import com.example.composettest.Lesson.LessonTest.LessonTest
 import com.example.composettest.LessonMaker.LessonMakerEditQuestionsScreen
 import com.example.composettest.LessonMaker.LessonMakerEditScreen
@@ -37,6 +34,9 @@ fun Navigation() {
         }
         composable(route = Screen.Dictionary.route){
             Dictionary(navController = navController)
+        }
+        composable(route = Screen.PopScreen.route) {
+            PopScreen(navController = navController)
         }
         composable(
             route = Screen.SignView.route + "?filePath={filepath}&sign={sign}",
@@ -73,7 +73,7 @@ fun Navigation() {
             val lessonId = it.arguments?.getInt("id") ?: 0
             LessonPreviewScreen(navController = navController, id = lessonId)
         }
-        composable(route = Screen.LessonSignViewScreen.route + "?orderNum={orderNum}&lessonId={lessonId}&numQuestions={numQuestions}&lessonTitle={lessonTitle}",
+        composable(route = Screen.LessonSignViewScreen.route + "?orderNum={orderNum}&lessonId={lessonId}&numQuestion={numQuestion}&lessonTitle={lessonTitle}",
         arguments = listOf(
             navArgument("orderNum"){
                 type = NavType.IntType
@@ -115,7 +115,7 @@ fun Navigation() {
             val orderNum = it.arguments?.getInt("orderNum") ?: 1
             LessonTest(navController = navController, questionId = lessonId, orderNum = orderNum)
         }
-        composable(route = Screen.LessonQuestionMultiChoiceScreen.route + "?lessonId={lessonId}&orderNum={orderNum}&numQuestions={numQuestions}&lessonTitle={lessonTitle}",
+        composable(route = Screen.LessonQuestionMultiChoiceScreen.route + "?lessonId={lessonId}&orderNum={orderNum}&numQuestion={numQuestion}&lessonTitle={lessonTitle}",
             arguments = listOf(
                 navArgument("lessonId"){
                     type = NavType.IntType

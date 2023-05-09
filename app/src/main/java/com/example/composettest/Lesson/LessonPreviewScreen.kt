@@ -34,6 +34,8 @@ fun LessonPreviewScreen(
     id: Int
 ){
 
+
+
     val title = viewModel.name
     val lessonNum = viewModel.lessonNum
     val signs = viewModel.signs
@@ -53,11 +55,15 @@ fun LessonPreviewScreen(
         .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Row(Modifier.fillMaxWidth().padding(horizontal = 8.dp), horizontalArrangement = Arrangement.Start) {
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp), horizontalArrangement = Arrangement.Start) {
 
 
             Button(
-                onClick = { navController.navigateUp() },
+                onClick = { navController.navigateUp()
+                 },
                 shape = RoundedCornerShape(60),
                 modifier = Modifier
                     .width(100.dp)
@@ -127,7 +133,7 @@ fun PreviewDescription(id: Int, name: String, lessonNum: Int, signs: Int, questi
         Column(modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Bottom,
             horizontalAlignment = Alignment.CenterHorizontally) {
-            Button(onClick = {navController.navigate(Screen.LessonSignViewScreen.route + "?lessonId=${id}&orderNum=${1}&numQuestion=${viewModel.signs!! + viewModel.questions!!}&lessonTitle=${name}")} ,modifier = Modifier
+            Button(onClick = {navController.navigate(Screen.LessonSignViewScreen.route + "?lessonId=${id}&orderNum=${1}&numQuestion=${signs + questions}&lessonTitle=${name}")} ,modifier = Modifier
                 .width(200.dp)
                 .height(70.dp)
                 .padding(15.dp),

@@ -167,14 +167,6 @@ class LessonMakerEditViewModel @Inject constructor(
                     }
                     lessonEditState.value.lesson.signs = signs
                     lessonEditState.value.lesson.questions = questions
-/*
-                    if (event.lessonId == "1"){
-                        lessonsDB.document().set(lessonEditState.value.lesson).await()
-                    } else {
-                        lessonsDB.document(event.lessonId).set(lessonEditState.value.lesson).await()
-                    }
-
- */
                 }
              }
         }

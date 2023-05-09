@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.example.composettest.Domain.model.Lesson
 import com.example.composettest.Lesson.LessonState
 import com.example.composettest.Lesson.LessonViewModel
@@ -50,6 +51,10 @@ fun HomeScreen(
     viewModel: LessonViewModel = hiltViewModel(), // View model to manage databases
     shareViewModel: SharedLessonsViewModel = hiltViewModel())
 {
+
+
+    //navController.popBackStack(route = Screen.LessonPreviewScreen.route + "?id={id}", inclusive = true)
+
     // state values are assigned to notify Compose recomposition is needed on value change
 
     val state = viewModel.state.value

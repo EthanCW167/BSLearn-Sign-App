@@ -66,7 +66,6 @@ class LessonQuestionViewModel @Inject constructor(
                                 signId = question.signId
                                 isCorrect = question.isCorrect
 
-                                println(signId)
                             }
 
                         signId?.let {
@@ -77,7 +76,7 @@ class LessonQuestionViewModel @Inject constructor(
                             }
                         }
 
-                        if (orderNum <= numQuestion) {
+                        if (orderNum < numQuestion) {
                             lessonUseCases.getQuestionByIdByOrderUseCase(lessonId,orderNum+1)
                                 ?.also { nextQuestion ->
                                     nextQId = nextQuestion.questionId
@@ -168,7 +167,9 @@ class LessonQuestionViewModel @Inject constructor(
 
     fun nextScreen(lessonId: Int, orderNum: Int, numQuestion: Int, navController: NavController, lessonTitle: String) {
 
-        if (orderNum <= numQuestion) {
+        println("orderNum" + orderNum)
+        println("numQuestion" + numQuestion)
+        if (orderNum < numQuestion) {
             println(nextQType)
 
             if (nextQType == "multiple_choice") {
@@ -176,8 +177,7 @@ class LessonQuestionViewModel @Inject constructor(
             } else if (nextQType == "sign") {
                 navController.navigate(Screen.LessonSignViewScreen.route + "?lessonId=${getLessonId}&orderNum=${nextQOrderNum}&numQuestion=${numQuestion}&lessonTitle=${lessonTitle}")
             }
-        }
-        else {
+        } else {
             navController.navigate(Screen.LessonSummaryScreen.route + "?lessonId=${lessonId}&lessonTitle=${lessonTitle}")
         }
     }

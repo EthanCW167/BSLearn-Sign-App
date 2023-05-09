@@ -53,5 +53,7 @@ sealed class Screen(val route: String) {
     object SharedLessonSummaryScreen: Screen("shared_summary")
 
     object SharedLessonPreviewScreen: Screen("shared_preview")
+
+    object PopScreen: Screen("pop_screen")
 }
 

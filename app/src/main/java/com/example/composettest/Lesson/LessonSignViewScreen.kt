@@ -38,9 +38,13 @@ fun LessonSignViewScreen(
     lessonId: Int,
     numQuestion: Int,
     lessonTitle: String
+
 ){
 
-    //viewModel.getQuestionRedo(lessonId, orderNum)
+    println("orderNum " + orderNum)
+    println("numQuestion " + numQuestion)
+
+    //viewModel.getQuestionRedo(lessonId, orderNum, numQuestion)
 
     Surface(
         modifier = Modifier.fillMaxSize(),
