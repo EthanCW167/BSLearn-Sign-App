@@ -38,23 +38,12 @@ import com.example.composettest.Screen
 @Composable
 fun LessonSummaryScreen(
     navController: NavController,
-    backStackEntry: NavBackStackEntry = navController.getBackStackEntry(Screen.LessonPreviewScreen.route + "?id={id}"),
-    viewModel: LessonSummaryViewModel = hiltViewModel(remember { backStackEntry }),
+    viewModel: LessonSummaryViewModel = hiltViewModel(),
     signsViewModel: SignLearnedViewModel = hiltViewModel(),
     lessonId: Int,
     lessonTitle: String
 ){
 
-/*
-    val questionsUi: List<Question> by viewModel.question.collectAsState(initial = emptyList())
-    println(questionsUi.size)
-    println(questionsUi.size)
-    println(questionsUi.size)
-    println(questionsUi.size)
-    val questionTest = questionsUi
-
-
- */
 
     val state = viewModel.qState.value
 
@@ -122,12 +111,12 @@ fun LessonSummaryScreen(
                 verticalArrangement = Arrangement.SpaceEvenly,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                var questionNumber = 1
+                var questionNumber = 0
                 items(state.questions) { question ->
                     viewModel.getSignData(question)
                     if (question.questionType != "sign") {
                         questionNumber += 1
-                        viewModel.signData?.let { QuestionSummaryCard(question = question, it, questionNumber) }
+                        QuestionSummaryCard(question = question, viewModel.lessonQuestionDecider(question), questionNumber)
 
                     } else {
                         viewModel.signData?.sign?.let { signsViewModel.updateSigns(it) }
@@ -167,7 +156,7 @@ fun LessonSummaryScreen(
     }
 
 @Composable
-fun QuestionSummaryCard(question: Question, signData: signData, questionNumber: Int){
+fun QuestionSummaryCard(question: Question, previewFilePath: Int, questionNumber: Int){
     val colorType: Color =
     if (question.isCorrect == 1) Color(106, 192, 115)
     else Color(233,80,80)
@@ -177,7 +166,7 @@ fun QuestionSummaryCard(question: Question, signData: signData, questionNumber: 
             .height(150.dp),
             horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically) {
-        Image(painter = painterResource(id = signData.previewFilePath), contentDescription = "Question Preview", modifier = Modifier
+        Image(painter = painterResource(id = previewFilePath), contentDescription = "Question Preview", modifier = Modifier
             .height(140.dp)
             .width(180.dp)
             .padding(5.dp)
@@ -208,3 +197,4 @@ fun QuestionSummaryCard(question: Question, signData: signData, questionNumber: 
             Icon(imageVector = Icons.Default.Close, contentDescription = "Check Mark", Modifier.size(25.dp))
         }}
 }
+

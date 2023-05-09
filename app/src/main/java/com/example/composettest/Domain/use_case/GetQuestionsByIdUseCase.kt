@@ -11,7 +11,7 @@ class GetQuestionsByIdUseCase(
     ) {
 
     operator fun invoke(lessonId: Int): Flow<List<Question>>? {
-        return repository.getQuestionsByLessonId(0)
+        return repository.getQuestionsByLessonId(lessonId)
         }
 
 

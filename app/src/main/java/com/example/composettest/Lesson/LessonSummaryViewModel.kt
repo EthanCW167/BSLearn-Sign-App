@@ -17,6 +17,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
+import javax.annotation.meta.When
 import javax.inject.Inject
 
 @HiltViewModel
@@ -82,6 +83,32 @@ class LessonSummaryViewModel @Inject constructor(
                 )
             )
         }
+    }
+
+    fun lessonQuestionDecider(question: Question): Int{
+
+        if (question.signId == 0){
+            return 2131165288
+        } else if (question.signId == 1){
+            return 2131165310
+        } else if (question.signId == 2) {
+            return 2131165185
+        } else if (question.signId == 3) {
+            return 2131165316
+        } else if (question.signId == 4) {
+            return 2131165187
+        } else if (question.signId == 5) {
+            return 2131165311
+        } else if (question.signId == 6) {
+            return 2131165312
+        } else if (question.signId == 7) {
+            return 2131165313
+        } else if (question.signId == 8) {
+            return 2131165314
+        } else if (question.signId == 9) {
+            return 2131165315
+        }
+        return 0
     }
 }
 
